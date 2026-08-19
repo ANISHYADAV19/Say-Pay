@@ -1,0 +1,14 @@
+{
+  "1":  ["oranges", "kale", "grapefruit", "leeks", "pomegranate"],
+  "2":  ["oranges", "cabbage", "broccoli", "kiwi", "lemons"],
+  "3":  ["spinach", "asparagus", "peas", "artichoke", "spring onions"],
+  "4":  ["strawberries", "asparagus", "peas", "radish", "rhubarb"],
+  "5":  ["strawberries", "cherries", "apricots", "zucchini", "lettuce"],
+  "6":  ["cherries", "peaches", "blueberries", "cucumber", "corn"],
+  "7":  ["watermelon", "peaches", "tomatoes", "corn", "plums"],
+  "8":  ["mango", "tomatoes", "corn", "peaches", "grapes"],
+  "9":  ["apples", "grapes", "figs", "pears", "pumpkin"],
+  "10": ["pumpkin", "apples", "pears", "sweet potato", "mushrooms"],
+  "11": ["pumpkin", "cranberries", "sweet potato", "brussels sprouts", "oranges"],
+  "12": ["oranges", "pomegranate", "cranberries", "carrots", "potatoes"]
+}

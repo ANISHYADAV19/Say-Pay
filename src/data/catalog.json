@@ -1,0 +1,49 @@
+[
+  { "id": "p001", "name": "organic apples", "brand": "FreshFarm", "size": "1kg", "price": 4.50, "category": "produce", "tags": ["organic", "fruit"] },
+  { "id": "p002", "name": "bananas", "brand": "Chiquita", "size": "1kg", "price": 1.80, "category": "produce", "tags": ["fruit"] },
+  { "id": "p003", "name": "organic bananas", "brand": "FreshFarm", "size": "1kg", "price": 2.90, "category": "produce", "tags": ["organic", "fruit"] },
+  { "id": "p004", "name": "baby spinach", "brand": "GreenLeaf", "size": "200g", "price": 2.20, "category": "produce", "tags": ["organic", "vegetable"] },
+  { "id": "p005", "name": "roma tomatoes", "brand": "FreshFarm", "size": "500g", "price": 2.40, "category": "produce", "tags": ["vegetable"] },
+  { "id": "p006", "name": "avocados", "brand": "FreshFarm", "size": "pack of 4", "price": 5.50, "category": "produce", "tags": ["fruit"] },
+
+  { "id": "p010", "name": "whole milk", "brand": "DairyPure", "size": "1L", "price": 1.60, "category": "dairy", "tags": [] },
+  { "id": "p011", "name": "organic whole milk", "brand": "MeadowGold", "size": "1L", "price": 2.40, "category": "dairy", "tags": ["organic"] },
+  { "id": "p012", "name": "oat milk", "brand": "Oatly", "size": "1L", "price": 2.80, "category": "dairy", "tags": ["plant-based", "vegan"] },
+  { "id": "p013", "name": "almond milk", "brand": "Alpro", "size": "1L", "price": 2.60, "category": "dairy", "tags": ["plant-based", "vegan"] },
+  { "id": "p014", "name": "greek yogurt", "brand": "Chobani", "size": "500g", "price": 3.20, "category": "dairy", "tags": [] },
+  { "id": "p015", "name": "cheddar cheese", "brand": "Cabot", "size": "250g", "price": 4.00, "category": "dairy", "tags": [] },
+  { "id": "p016", "name": "salted butter", "brand": "Kerrygold", "size": "227g", "price": 3.50, "category": "dairy", "tags": [] },
+  { "id": "p017", "name": "eggs", "brand": "HappyHen", "size": "dozen", "price": 3.00, "category": "dairy", "tags": ["free-range"] },
+
+  { "id": "p020", "name": "whole wheat bread", "brand": "Nature's Own", "size": "600g", "price": 2.50, "category": "bakery", "tags": ["whole-grain"] },
+  { "id": "p021", "name": "white bread", "brand": "Wonder", "size": "600g", "price": 1.90, "category": "bakery", "tags": [] },
+  { "id": "p022", "name": "bagels", "brand": "Thomas'", "size": "pack of 6", "price": 3.30, "category": "bakery", "tags": [] },
+  { "id": "p023", "name": "croissants", "brand": "La Boulangerie", "size": "pack of 4", "price": 4.20, "category": "bakery", "tags": [] },
+
+  { "id": "p030", "name": "chicken breast", "brand": "Perdue", "size": "500g", "price": 6.00, "category": "meat", "tags": [] },
+  { "id": "p031", "name": "ground beef", "brand": "ButcherBox", "size": "500g", "price": 7.50, "category": "meat", "tags": [] },
+  { "id": "p032", "name": "bacon", "brand": "Oscar Mayer", "size": "250g", "price": 4.80, "category": "meat", "tags": [] },
+
+  { "id": "p040", "name": "atlantic salmon", "brand": "SeaCatch", "size": "300g", "price": 8.50, "category": "seafood", "tags": [] },
+  { "id": "p041", "name": "canned tuna", "brand": "John West", "size": "185g", "price": 2.10, "category": "seafood", "tags": [] },
+
+  { "id": "p050", "name": "sparkling water", "brand": "LaCroix", "size": "pack of 8", "price": 4.00, "category": "beverages", "tags": [] },
+  { "id": "p051", "name": "orange juice", "brand": "Tropicana", "size": "1L", "price": 3.10, "category": "beverages", "tags": [] },
+  { "id": "p052", "name": "cold brew coffee", "brand": "Stumptown", "size": "750ml", "price": 5.00, "category": "beverages", "tags": [] },
+  { "id": "p053", "name": "green tea", "brand": "Twinings", "size": "50 bags", "price": 3.40, "category": "beverages", "tags": [] },
+
+  { "id": "p060", "name": "basmati rice", "brand": "Tilda", "size": "1kg", "price": 3.80, "category": "pantry", "tags": [] },
+  { "id": "p061", "name": "spaghetti", "brand": "Barilla", "size": "500g", "price": 1.50, "category": "pantry", "tags": [] },
+  { "id": "p062", "name": "olive oil", "brand": "Bertolli", "size": "500ml", "price": 6.50, "category": "pantry", "tags": [] },
+  { "id": "p063", "name": "peanut butter", "brand": "Skippy", "size": "340g", "price": 3.20, "category": "pantry", "tags": [] },
+
+  { "id": "p070", "name": "potato chips", "brand": "Lay's", "size": "150g", "price": 2.00, "category": "snacks", "tags": [] },
+  { "id": "p071", "name": "dark chocolate", "brand": "Lindt", "size": "100g", "price": 2.80, "category": "snacks", "tags": [] },
+
+  { "id": "p080", "name": "toothpaste", "brand": "Colgate", "size": "100ml", "price": 2.50, "category": "personal-care", "tags": [] },
+  { "id": "p081", "name": "organic toothpaste", "brand": "Tom's", "size": "100ml", "price": 4.60, "category": "personal-care", "tags": ["organic"] },
+  { "id": "p082", "name": "shampoo", "brand": "Head & Shoulders", "size": "400ml", "price": 5.20, "category": "personal-care", "tags": [] },
+
+  { "id": "p090", "name": "dish soap", "brand": "Dawn", "size": "500ml", "price": 2.30, "category": "household", "tags": [] },
+  { "id": "p091", "name": "paper towels", "brand": "Bounty", "size": "pack of 2", "price": 4.10, "category": "household", "tags": [] }
+]

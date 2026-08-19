@@ -1,0 +1,74 @@
+{
+  "produce": [
+    "apple", "apples", "banana", "bananas", "orange", "oranges", "lemon", "lemons",
+    "lime", "limes", "grape", "grapes", "strawberry", "strawberries", "blueberry",
+    "blueberries", "raspberry", "mango", "mangoes", "pineapple", "watermelon", "melon",
+    "peach", "peaches", "pear", "pears", "plum", "kiwi", "avocado", "avocados",
+    "tomato", "tomatoes", "potato", "potatoes", "onion", "onions", "garlic", "ginger",
+    "carrot", "carrots", "broccoli", "cauliflower", "spinach", "lettuce", "kale",
+    "cucumber", "cucumbers", "pepper", "peppers", "capsicum", "chilli", "chili",
+    "mushroom", "mushrooms", "zucchini", "eggplant", "celery", "cabbage", "corn",
+    "peas", "beans", "green beans", "coriander", "cilantro", "parsley", "mint",
+    "herbs", "sweet potato", "beetroot", "radish", "pumpkin", "cherry", "cherries"
+  ],
+  "dairy": [
+    "milk", "whole milk", "skim milk", "cheese", "cheddar", "mozzarella", "parmesan",
+    "butter", "yogurt", "yoghurt", "cream", "sour cream", "cream cheese", "cottage cheese",
+    "ghee", "paneer", "curd", "custard", "condensed milk", "whipping cream", "kefir",
+    "egg", "eggs"
+  ],
+  "bakery": [
+    "bread", "white bread", "brown bread", "whole wheat bread", "baguette", "bun", "buns",
+    "roll", "rolls", "bagel", "bagels", "croissant", "croissants", "muffin", "muffins",
+    "cake", "cakes", "cupcake", "cookies", "biscuit", "biscuits", "tortilla", "tortillas",
+    "pita", "naan", "donut", "doughnut", "pastry", "pretzel", "waffle", "waffles"
+  ],
+  "meat": [
+    "chicken", "chicken breast", "beef", "steak", "mince", "ground beef", "pork",
+    "bacon", "sausage", "sausages", "ham", "turkey", "lamb", "mutton", "ribs",
+    "meatballs", "hot dog", "hot dogs", "salami", "pepperoni"
+  ],
+  "seafood": [
+    "fish", "salmon", "tuna", "cod", "prawn", "prawns", "shrimp", "crab", "lobster",
+    "squid", "calamari", "oyster", "oysters", "mussels", "sardines", "mackerel", "tilapia"
+  ],
+  "frozen": [
+    "ice cream", "frozen pizza", "frozen peas", "frozen fries", "fries", "frozen berries",
+    "frozen vegetables", "popsicle", "ice", "frozen chicken", "frozen fish", "gelato"
+  ],
+  "pantry": [
+    "rice", "pasta", "noodles", "spaghetti", "flour", "sugar", "salt", "pepper spice",
+    "oil", "olive oil", "vegetable oil", "vinegar", "soy sauce", "ketchup", "mustard",
+    "mayonnaise", "mayo", "honey", "jam", "peanut butter", "cereal", "oats", "oatmeal",
+    "lentils", "dal", "chickpeas", "canned beans", "canned tomatoes", "tomato sauce",
+    "pasta sauce", "stock", "broth", "spices", "curry powder", "baking powder",
+    "baking soda", "yeast", "cornflour", "cornstarch", "tea", "coffee", "beans coffee",
+    "sauce", "seasoning", "gravy", "coconut milk", "tin", "canned", "nuts", "almonds",
+    "cashews", "raisins", "dates", "granola", "cereal bar"
+  ],
+  "snacks": [
+    "chips", "crisps", "chocolate", "candy", "sweets", "popcorn", "crackers", "nachos",
+    "pretzels", "granola bar", "protein bar", "gum", "jelly", "gummies", "wafers",
+    "trail mix", "cookies snack", "namkeen", "chocolates", "toffee"
+  ],
+  "beverages": [
+    "water", "sparkling water", "soda", "cola", "coke", "pepsi", "juice", "orange juice",
+    "apple juice", "lemonade", "energy drink", "sports drink", "iced tea", "smoothie",
+    "coconut water", "beer", "wine", "soft drink", "drinks", "milkshake", "kombucha"
+  ],
+  "household": [
+    "toilet paper", "tissue", "tissues", "paper towels", "kitchen roll", "napkins",
+    "dish soap", "dishwashing liquid", "detergent", "laundry detergent", "fabric softener",
+    "bleach", "cleaner", "surface cleaner", "sponge", "sponges", "trash bags", "bin bags",
+    "garbage bags", "aluminium foil", "foil", "cling film", "plastic wrap", "batteries",
+    "light bulb", "candles", "matches", "air freshener", "floor cleaner", "mop"
+  ],
+  "personal-care": [
+    "toothpaste", "toothbrush", "mouthwash", "floss", "shampoo", "conditioner", "soap",
+    "body wash", "hand wash", "sanitizer", "deodorant", "razor", "razors", "shaving cream",
+    "lotion", "moisturizer", "sunscreen", "face wash", "cotton", "cotton buds", "band aid",
+    "bandage", "painkiller", "paracetamol", "ibuprofen", "vitamins", "supplements",
+    "diapers", "nappies", "wipes", "baby wipes", "sanitary pads", "tampons", "makeup",
+    "perfume", "hair oil", "comb"
+  ]
+}

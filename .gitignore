@@ -1,0 +1,27 @@
+# dependencies
+node_modules
+
+# build output
+dist
+
+# secrets — NEVER commit real keys (security doc §7)
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# vercel
+.vercel
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+coverage
+
+# claude code / local tooling
+.claude
+
+# assessment brief — not part of the deliverable; exclude from public repo
+assignment.txt

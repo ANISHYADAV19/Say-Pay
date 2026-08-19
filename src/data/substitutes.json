@@ -1,0 +1,22 @@
+{
+  "milk": ["oat milk", "almond milk", "soy milk"],
+  "butter": ["margarine", "olive oil"],
+  "sugar": ["honey", "jaggery", "maple syrup"],
+  "bread": ["whole wheat bread", "multigrain bread", "sourdough"],
+  "rice": ["brown rice", "quinoa"],
+  "pasta": ["whole wheat pasta", "rice noodles"],
+  "flour": ["almond flour", "whole wheat flour"],
+  "cream": ["coconut cream", "greek yogurt"],
+  "cheese": ["vegan cheese", "cottage cheese"],
+  "eggs": ["egg substitute", "tofu"],
+  "chicken": ["tofu", "paneer", "chickpeas"],
+  "beef": ["mushrooms", "lentils"],
+  "soda": ["sparkling water", "kombucha"],
+  "chips": ["popcorn", "trail mix"],
+  "coffee": ["green tea", "matcha"],
+  "yogurt": ["greek yogurt", "coconut yogurt"],
+  "mayonnaise": ["greek yogurt", "hummus"],
+  "salt": ["low-sodium salt", "herbs"],
+  "orange juice": ["fresh oranges", "grapefruit juice"],
+  "ice cream": ["frozen yogurt", "sorbet"]
+}
