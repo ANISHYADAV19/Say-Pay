@@ -85,25 +85,7 @@ Design rationale for each choice lives in [`docs/`](docs/).
 
 ---
 
-## Local development
 
-```bash
-npm install
-npm run dev
-```
-
-Open the printed `http://localhost:5173`. The app works immediately using the **rule-based parser** — no API key required. To enable the LLM fallback locally, add a key (see below); without one, low-confidence phrases simply fall back to the rules result.
-
-### Other scripts
-
-```bash
-npm run build      # production build to dist/
-npm run preview    # preview the production build
-npm run test       # run the unit test suite once
-npm run test:watch # watch mode
-```
-
----
 
 ## Environment variables
 
