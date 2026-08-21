@@ -122,6 +122,7 @@ Requirements are grouped by **Epic** (E1–E8). Each has a stable ID used across
 | FR-7.3 | Loading states for async work (LLM/search). | P0 |
 | FR-7.4 | Empty, error, and success states are all designed. | P0 |
 | FR-7.5 | Newly added/removed items are briefly highlighted. | P1 |
+| FR-7.6 | **Light/dark theme toggle** — a header button switches themes instantly; the choice persists and defaults to the OS `prefers-color-scheme` on first visit. | P1 |
 
 ### E8 — Deployment & Ops
 | ID | Requirement | Priority |

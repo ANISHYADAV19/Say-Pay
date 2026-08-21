@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
-  darkMode: 'media', // honor prefers-color-scheme (frontend spec §6)
+  darkMode: 'class', // manual light/dark toggle via a .dark class on <html> (defaults to prefers-color-scheme on first load)
   theme: {
     extend: {
       colors: {

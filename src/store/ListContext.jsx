@@ -20,10 +20,26 @@ const uid = () =>
 
 const norm = (s) => (s || '').trim().toLowerCase()
 
+/**
+ * Initial theme = whatever the pre-paint script in index.html already resolved
+ * (stored choice, else system preference), read back off the <html> class so
+ * there's a single source of truth and no flash. Falls back safely off-DOM.
+ */
+function getInitialTheme() {
+  if (typeof document !== 'undefined') {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  }
+  if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+    return 'dark'
+  }
+  return 'light'
+}
+
 const initialState = {
   items: [],
   history: {}, // name -> { name, count, lastAdded }
   language: 'en-US',
+  theme: getInitialTheme(), // 'light' | 'dark' (FR-7.6)
   justChangedId: null, // drives the brief add/update highlight (FR-7.5)
 }
 
@@ -42,8 +58,12 @@ function bumpHistory(history, name) {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'hydrate':
-      return { ...state, ...action.payload }
+    case 'hydrate': {
+      // a stored theme of null means "no explicit choice" — keep the
+      // system-derived default rather than clobbering it.
+      const { theme, ...rest } = action.payload
+      return { ...state, ...rest, theme: theme === 'light' || theme === 'dark' ? theme : state.theme }
+    }
 
     case 'add': {
       const { name, quantity = 1, unit = null, category } = action.payload
@@ -133,6 +153,12 @@ function reducer(state, action) {
     case 'setLanguage':
       return { ...state, language: action.payload.language }
 
+    case 'setTheme':
+      return { ...state, theme: action.payload.theme === 'dark' ? 'dark' : 'light' }
+
+    case 'toggleTheme':
+      return { ...state, theme: state.theme === 'dark' ? 'light' : 'dark' }
+
     default:
       return state
   }
@@ -150,7 +176,7 @@ export function ListProvider({ children }) {
   // persist on change (debounced to a microtask via effect)
   useEffect(() => {
     saveState(state)
-  }, [state.items, state.history, state.language])
+  }, [state.items, state.history, state.language, state.theme])
 
   // reflect the selected language on <html lang> for a11y (NFR-4)
   useEffect(() => {
@@ -158,6 +184,17 @@ export function ListProvider({ children }) {
       document.documentElement.lang = baseLang(state.language)
     }
   }, [state.language])
+
+  // apply the theme: .dark class (Tailwind), native color-scheme (form
+  // controls/scrollbars), and the mobile address-bar color (FR-7.6).
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    const dark = state.theme === 'dark'
+    const root = document.documentElement
+    root.classList.toggle('dark', dark)
+    root.style.colorScheme = dark ? 'dark' : 'light'
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0B0F14' : '#0D9488')
+  }, [state.theme])
 
   // stable action creators
   const actions = useMemo(
@@ -172,6 +209,8 @@ export function ListProvider({ children }) {
       deleteItem: (id) => dispatch({ type: 'deleteById', payload: { id } }),
       clearList: () => dispatch({ type: 'clear' }),
       setLanguage: (language) => dispatch({ type: 'setLanguage', payload: { language } }),
+      setTheme: (theme) => dispatch({ type: 'setTheme', payload: { theme } }),
+      toggleTheme: () => dispatch({ type: 'toggleTheme' }),
     }),
     [],
   )

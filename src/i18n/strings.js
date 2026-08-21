@@ -30,6 +30,22 @@ const S = {
     'hi-IN': 'भाषा',
     'zh-CN': '语言',
   },
+  'theme.toDark': {
+    'en-US': 'Switch to dark theme',
+    'es-ES': 'Cambiar a tema oscuro',
+    'fr-FR': 'Passer au thème sombre',
+    'de-DE': 'Zu dunklem Design wechseln',
+    'hi-IN': 'डार्क थीम पर स्विच करें',
+    'zh-CN': '切换到深色主题',
+  },
+  'theme.toLight': {
+    'en-US': 'Switch to light theme',
+    'es-ES': 'Cambiar a tema claro',
+    'fr-FR': 'Passer au thème clair',
+    'de-DE': 'Zu hellem Design wechseln',
+    'hi-IN': 'लाइट थीम पर स्विच करें',
+    'zh-CN': '切换到浅色主题',
+  },
 
   // Status bar
   'status.ready': {

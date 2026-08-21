@@ -14,7 +14,7 @@ const hasStorage = () => {
   }
 }
 
-/** @returns {{items:Array,history:Object,language:string}|null} */
+/** @returns {{items:Array,history:Object,language:string,theme:('light'|'dark'|null)}|null} */
 export function loadState() {
   if (!hasStorage()) return null
   try {
@@ -27,6 +27,8 @@ export function loadState() {
       items: data.items,
       history: data.history && typeof data.history === 'object' ? data.history : {},
       language: typeof data.language === 'string' ? data.language : 'en-US',
+      // theme is optional: null means "no explicit choice → follow the system"
+      theme: data.theme === 'light' || data.theme === 'dark' ? data.theme : null,
     }
   } catch {
     return null
@@ -42,6 +44,7 @@ export function saveState(state) {
         items: state.items,
         history: state.history,
         language: state.language,
+        theme: state.theme,
       }),
     )
     return true

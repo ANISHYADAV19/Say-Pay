@@ -50,7 +50,7 @@
 ```
 
 **Regions:**
-- **Header** — product name; language dropdown (stretch, FR-6.1/6.4 — drives both the recognition locale *and* the UI language via the `useT()` i18n hook); optional "clear list" in overflow.
+- **Header** — product name; a light/dark theme toggle (FR-7.6); language dropdown (stretch, FR-6.1/6.4 — drives both the recognition locale *and* the UI language via the `useT()` i18n hook); optional "clear list" in overflow.
 - **Status line** — live transcript + mic state; doubles as the ARIA live region (NFR-4).
 - **Suggestions strip** — scrollable chips (FR-4.x); hidden when empty.
 - **List** — grouped by category (FR-3.4); each row has name, qty/unit, and a row menu (check off / edit / delete → FR-3.5).
@@ -159,7 +159,7 @@ State is provided via a `ListContext` (reducer) + a `useSpeech()` hook wrapping 
 | Radius | 12–16px | Cards, chips, FAB |
 | Spacing | 4px base grid (8/12/16/24) | Layout rhythm |
 
-> Keep the palette tight (1 accent + neutrals + semantic green/red). Support **dark mode** via `prefers-color-scheme` if time allows — it reads as polished for near-zero cost. Ensure WCAG AA contrast (NFR-4).
+> Keep the palette tight (1 accent + neutrals + semantic green/red). **Dark mode** ships as a manual light/dark toggle (class-based) that defaults to `prefers-color-scheme` and persists the user's choice (FR-7.6); a pre-paint script in `index.html` applies it before first render to avoid a flash. Ensure WCAG AA contrast (NFR-4).
 
 ---
 

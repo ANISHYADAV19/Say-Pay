@@ -16,7 +16,7 @@ Manage a shopping list entirely by voice. Say **“add two bottles of milk,”**
 - 🔎 **Voice search** over a mock catalog with price / brand / size filters (“find apples under $5”, “show me organic milk”).
 - 💡 **Smart suggestions:** substitutes for items on the list, in-season produce, and reorder hints from your history.
 - 🌐 **Fully localized in 6 languages** (English, Spanish, French, German, Hindi, Chinese) — one selector switches the whole interface *and* the speech-recognition locale together; `<html lang>` follows for screen readers.
-- ♿ **Accessible & mobile-first:** keyboard-operable, screen-reader announcements, dark mode, reduced-motion support.
+- ♿ **Accessible & mobile-first:** keyboard-operable, screen-reader announcements, a one-tap light/dark theme toggle, reduced-motion support.
 - 🔒 **Secure by design:** the LLM API key lives **only** on the server; the transcript is treated as untrusted input; the LLM’s output is re-validated on the client.
 
 ---
@@ -75,7 +75,7 @@ Bare nouns default to *add* (“eggs” → adds eggs), matching how people actu
 ## Tech stack
 
 - **React 18 + Vite 5** — SPA, mobile-first
-- **Tailwind CSS v3** — styling, dark mode via `prefers-color-scheme`
+- **Tailwind CSS v3** — styling; class-based dark mode with a manual light/dark toggle that defaults to `prefers-color-scheme`
 - **Web Speech API** — `SpeechRecognition` for voice capture (no audio ever leaves the browser through our code)
 - **Vercel Serverless Function** (`api/parse.js`) — proxies to **Google Gemini**, keeping the key off the client
 - **localStorage** — persistence (no backend/database needed at this scale)

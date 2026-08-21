@@ -1,4 +1,5 @@
 import LanguageSelect from './LanguageSelect.jsx'
+import ThemeToggle from './ThemeToggle.jsx'
 import { useT } from '../i18n/useT.js'
 
 /**
@@ -20,7 +21,10 @@ export default function Header({ language, onLanguageChange }) {
           <p className="text-xs text-stone-500 dark:text-stone-400">{t('header.subtitle')}</p>
         </div>
       </div>
-      <LanguageSelect value={language} onChange={onLanguageChange} />
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <LanguageSelect value={language} onChange={onLanguageChange} />
+      </div>
     </header>
   )
 }
