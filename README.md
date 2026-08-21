@@ -121,14 +121,7 @@ LLM_API_KEY=your-google-ai-studio-key   # server-side only — NEVER prefix with
 
 ---
 
-## Deployment (Vercel)
 
-1. Push this repo to GitHub.
-2. In Vercel: **New Project → import the repo.** The `vite` framework preset is auto-detected, and `api/parse.js` is deployed as a Node serverless function automatically.
-3. Add the environment variables above under **Settings → Environment Variables** (`LLM_API_KEY`, `LLM_MODEL`, `LLM_PROVIDER`).
-4. Deploy. [`vercel.json`](vercel.json) applies a strict Content-Security-Policy and other hardening headers, and scopes microphone access to the app’s own origin.
-
----
 
 ## Security notes
 
