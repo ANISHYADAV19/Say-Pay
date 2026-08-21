@@ -1,19 +1,21 @@
 import { cx } from '../utils/cx.js'
 import { titleCase, money } from '../utils/format.js'
 import { SearchIcon, CloseIcon, PlusIcon } from './icons.jsx'
+import { useT } from '../i18n/useT.js'
 
 /**
  * Catalog search results (SP-021, FR-5.2/5.3). Shows the matched products with
  * price/brand/size and a one-tap add. Overlays the list; closing returns to it.
  */
 export default function SearchResults({ search, onAdd, onClose }) {
+  const { t } = useT()
   const { query, filters = {}, results = [] } = search
-  const label = query || filters.brand || 'items'
+  const label = query || filters.brand || t('search.itemsFallback')
 
   const chips = []
   if (filters.brand) chips.push(filters.brand)
   if (filters.size) chips.push(filters.size)
-  if (filters.maxPrice) chips.push(`under ${money(filters.maxPrice)}`)
+  if (filters.maxPrice) chips.push(t('search.under', { price: money(filters.maxPrice) }))
 
   return (
     <div className="space-y-4">
@@ -21,7 +23,7 @@ export default function SearchResults({ search, onAdd, onClose }) {
         <div className="min-w-0">
           <h2 className="flex items-center gap-2 text-lg font-semibold text-stone-900 dark:text-stone-100">
             <SearchIcon className="shrink-0 text-accent" />
-            <span className="truncate">Results for “{label}”</span>
+            <span className="truncate">{t('search.resultsFor', { label })}</span>
           </h2>
           {chips.length > 0 && (
             <div className="mt-1 flex flex-wrap gap-1.5">
@@ -39,7 +41,7 @@ export default function SearchResults({ search, onAdd, onClose }) {
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close search"
+          aria-label={t('search.close')}
           className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-stone-500 transition hover:bg-stone-100 dark:hover:bg-stone-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           <CloseIcon />
@@ -48,8 +50,8 @@ export default function SearchResults({ search, onAdd, onClose }) {
 
       {results.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-stone-300 py-10 text-center text-stone-500 dark:border-stone-700 dark:text-stone-400">
-          <p className="font-medium">No matches for “{label}”</p>
-          <p className="mt-1 text-sm">Try a different term, brand, or price.</p>
+          <p className="font-medium">{t('search.noMatches', { label })}</p>
+          <p className="mt-1 text-sm">{t('search.tryOther')}</p>
         </div>
       ) : (
         <ul className="space-y-2">
@@ -72,14 +74,14 @@ export default function SearchResults({ search, onAdd, onClose }) {
               <button
                 type="button"
                 onClick={() => onAdd(p)}
-                aria-label={`Add ${p.name} to list`}
+                aria-label={t('search.addAria', { name: p.name })}
                 className={cx(
                   'flex shrink-0 items-center gap-1 rounded-lg bg-accent px-2.5 py-1.5 text-sm font-medium text-white transition',
                   'hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
                 )}
               >
                 <PlusIcon className="text-sm" />
-                Add
+                {t('search.add')}
               </button>
             </li>
           ))}

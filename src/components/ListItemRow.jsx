@@ -1,6 +1,7 @@
 import { cx } from '../utils/cx.js'
 import { titleCase } from '../utils/format.js'
 import { CheckIcon, TrashIcon, PlusIcon, MinusIcon } from './icons.jsx'
+import { useT } from '../i18n/useT.js'
 
 /**
  * A single list row (SP-016, FR-3.x/7.5). Tap the checkbox to mark bought,
@@ -8,6 +9,7 @@ import { CheckIcon, TrashIcon, PlusIcon, MinusIcon } from './icons.jsx'
  * voice add/update so the user can see what happened.
  */
 export default function ListItemRow({ item, justChanged, onToggle, onStep, onDelete }) {
+  const { t } = useT()
   const { id, name, quantity, unit, checked } = item
 
   return (
@@ -25,7 +27,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
         onClick={() => onToggle(id)}
         role="checkbox"
         aria-checked={checked}
-        aria-label={`Mark ${name} as ${checked ? 'not bought' : 'bought'}`}
+        aria-label={t(checked ? 'row.markNotBought' : 'row.markBought', { name })}
         className={cx(
           'grid h-6 w-6 shrink-0 place-items-center rounded-md border-2 transition',
           checked
@@ -59,18 +61,18 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
             type="button"
             onClick={() => onStep(id, quantity - 1)}
             disabled={quantity <= 1}
-            aria-label={`Decrease ${name} quantity`}
+            aria-label={t('row.decrease', { name })}
             className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white disabled:opacity-30 dark:text-stone-300 dark:hover:bg-stone-700"
           >
             <MinusIcon className="text-sm" />
           </button>
-          <span className="w-6 text-center text-sm font-semibold tabular-nums" aria-label={`Quantity ${quantity}`}>
+          <span className="w-6 text-center text-sm font-semibold tabular-nums" aria-label={t('row.quantity', { qty: quantity })}>
             {quantity}
           </span>
           <button
             type="button"
             onClick={() => onStep(id, quantity + 1)}
-            aria-label={`Increase ${name} quantity`}
+            aria-label={t('row.increase', { name })}
             className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white dark:text-stone-300 dark:hover:bg-stone-700"
           >
             <PlusIcon className="text-sm" />
@@ -81,7 +83,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
       <button
         type="button"
         onClick={() => onDelete(id)}
-        aria-label={`Delete ${name}`}
+        aria-label={t('row.delete', { name })}
         className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40"
       >
         <TrashIcon className="text-base" />

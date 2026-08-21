@@ -1,4 +1,5 @@
 import { cx } from '../utils/cx.js'
+import { useT } from '../i18n/useT.js'
 
 /**
  * Live transcript + mic status (SP-005, FR-1.2/7.2). Doubles as the assistive
@@ -6,7 +7,12 @@ import { cx } from '../utils/cx.js'
  * out every action ("Added 2 bottles of milk", "Didn't catch that…").
  */
 export default function StatusBar({ listening, processing, interim, lastTranscript, announcement }) {
-  const stateWord = processing ? 'Thinking…' : listening ? 'Listening…' : 'Ready'
+  const { t } = useT()
+  const stateWord = processing
+    ? t('status.thinking')
+    : listening
+      ? t('status.listening')
+      : t('status.ready')
   const dotClass = processing
     ? 'bg-amber-500 animate-pulse'
     : listening
@@ -29,7 +35,7 @@ export default function StatusBar({ listening, processing, interim, lastTranscri
           !shown && 'text-stone-400 dark:text-stone-600',
         )}
       >
-        {shown || 'Say “add milk” or “find apples under $5”'}
+        {shown || t('status.hint')}
       </p>
 
       {/* Screen-reader-only live region for action announcements */}

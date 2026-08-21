@@ -5,6 +5,7 @@ import { useToasts } from './hooks/useToasts.js'
 import { useCommandRunner } from './hooks/useCommandRunner.js'
 import { computeSuggestions } from './services/suggestions.js'
 import { titleCase } from './utils/format.js'
+import { useT } from './i18n/useT.js'
 
 import Header from './components/Header.jsx'
 import StatusBar from './components/StatusBar.jsx'
@@ -23,6 +24,7 @@ import ToastHost from './components/ToastHost.jsx'
  */
 function Shell() {
   const { language, setLanguage, addItem, items, history } = useList()
+  const { t } = useT()
 
   const [search, setSearch] = useState(null) // { query, filters, results } | null
   const [lastTranscript, setLastTranscript] = useState('')
@@ -60,15 +62,15 @@ function Shell() {
     if (!error) return
     const denied = error === 'not-allowed' || error === 'service-not-allowed'
     const msg = denied
-      ? 'Microphone blocked — allow it in your browser, or just type below.'
+      ? t('error.micBlocked')
       : error === 'audio-capture'
-        ? 'No microphone found — type your command instead.'
-        : 'Voice error — please try again, or type below.'
+        ? t('error.noMic')
+        : t('error.generic')
     if (denied || error === 'audio-capture') setVoiceDenied(true)
     push({ type: 'error', message: msg })
     announce(msg)
     clearError()
-  }, [error, push, announce, clearError])
+  }, [error, push, announce, clearError, t])
 
   const promoteTyped = !supported || voiceDenied
 
@@ -88,11 +90,11 @@ function Shell() {
   const addByName = useCallback(
     (name, category, unit = null) => {
       addItem({ name, category, unit })
-      const msg = `Added ${titleCase(name)}`
+      const msg = t('toast.added', { name: titleCase(name) })
       push({ type: 'success', message: msg })
       announce(msg)
     },
-    [addItem, push, announce],
+    [addItem, push, announce, t],
   )
 
   const onAddSuggestion = useCallback((s) => addByName(s.item, s.category), [addByName])

@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useReducer, useMemo, useCallback } from 'react'
 import { loadState, saveState } from '../services/storage.js'
-import { CATEGORIES, CATEGORY_LABELS } from '../services/command.js'
+import { CATEGORIES } from '../services/command.js'
 import { categorize } from '../services/categorize.js'
+import { baseLang } from '../i18n/strings.js'
 
 /**
  * List store (SP-013). useReducer + Context — no external state lib needed at
@@ -151,6 +152,13 @@ export function ListProvider({ children }) {
     saveState(state)
   }, [state.items, state.history, state.language])
 
+  // reflect the selected language on <html lang> for a11y (NFR-4)
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = baseLang(state.language)
+    }
+  }, [state.language])
+
   // stable action creators
   const actions = useMemo(
     () => ({
@@ -180,7 +188,8 @@ export function useList() {
 
 /**
  * Group items by category in the fixed display order, hiding empty groups.
- * Checked items sink to the bottom within their group.
+ * Checked items sink to the bottom within their group. Groups carry the
+ * category key; the view localizes it to a header label (FR-6.4).
  */
 export function useGroupedItems() {
   const { items } = useList()
@@ -195,7 +204,7 @@ export function useGroupedItems() {
       const list = byCat.get(cat)
       if (!list || list.length === 0) continue
       list.sort((a, b) => Number(a.checked) - Number(b.checked) || a.addedAt - b.addedAt)
-      groups.push({ category: cat, label: CATEGORY_LABELS[cat], items: list })
+      groups.push({ category: cat, items: list })
     }
     return groups
   }, [items])

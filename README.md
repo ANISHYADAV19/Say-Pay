@@ -15,6 +15,7 @@ Manage a shopping list entirely by voice. Say **“add two bottles of milk,”**
 - 🗂️ **Auto-categorization** into produce / dairy / bakery / pantry / etc., grouped in the list.
 - 🔎 **Voice search** over a mock catalog with price / brand / size filters (“find apples under $5”, “show me organic milk”).
 - 💡 **Smart suggestions:** substitutes for items on the list, in-season produce, and reorder hints from your history.
+- 🌐 **Fully localized in 6 languages** (English, Spanish, French, German, Hindi, Chinese) — one selector switches the whole interface *and* the speech-recognition locale together; `<html lang>` follows for screen readers.
 - ♿ **Accessible & mobile-first:** keyboard-operable, screen-reader announcements, dark mode, reduced-motion support.
 - 🔒 **Secure by design:** the LLM API key lives **only** on the server; the transcript is treated as untrusted input; the LLM’s output is re-validated on the client.
 
@@ -167,7 +168,7 @@ docs/                   Requirements, architecture, and decision docs
 npm run test
 ```
 
-Unit tests cover the parts where correctness matters most and that are cheap to test in isolation: the rule parser (including all 14 sample phrasings), categorization, and catalog search — 28 tests total.
+Unit tests cover the parts where correctness matters most and that are cheap to test in isolation: the rule parser (including all 14 sample phrasings), categorization, catalog search, and the i18n layer (interpolation, fallback, and a guard that every UI string is defined in all 6 languages) — 35 tests total.
 
 ---
 

@@ -3,6 +3,7 @@ import { useList } from '../store/ListContext.jsx'
 import { parseCommand } from '../services/parser.js'
 import { applyCommand, describeCommand } from '../services/commands.js'
 import { filterCatalog } from '../services/catalog.js'
+import { t } from '../i18n/strings.js'
 
 /**
  * The end-to-end command pipeline (SP-014): transcript -> parse -> execute ->
@@ -31,7 +32,7 @@ export function useCommandRunner({ language, pushToast, announce, setSearch }) {
       abortRef.current = ac
 
       setProcessing(true)
-      announce('Thinking…')
+      announce(t('status.thinking', language))
       try {
         const existingNames = list.items.map((it) => it.name)
         const { command } = await parseCommand(text, language, { signal: ac.signal })
@@ -43,14 +44,14 @@ export function useCommandRunner({ language, pushToast, announce, setSearch }) {
             filters: command.filters || {},
             results,
           })
-          const fb = describeCommand(command, { resultCount: results.length })
+          const fb = describeCommand(command, { resultCount: results.length, lang: language })
           pushToast(fb)
           announce(fb.message)
           return command
         }
 
         if (command.action === 'unknown') {
-          const fb = describeCommand(command)
+          const fb = describeCommand(command, { lang: language })
           pushToast(fb)
           announce(fb.message)
           return command
@@ -59,12 +60,12 @@ export function useCommandRunner({ language, pushToast, announce, setSearch }) {
         // list-mutating command
         const { changed } = applyCommand(command, list, { existingNames })
         setSearch(null) // return focus to the list
-        const fb = describeCommand(command, { changed })
+        const fb = describeCommand(command, { changed, lang: language })
         pushToast(fb)
         announce(fb.message)
         return command
       } catch {
-        const fb = { type: 'error', message: 'Something went wrong — please try again.' }
+        const fb = { type: 'error', message: t('cmd.error', language) }
         pushToast(fb)
         announce(fb.message)
         return null

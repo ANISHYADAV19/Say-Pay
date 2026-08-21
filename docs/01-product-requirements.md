@@ -112,6 +112,7 @@ Requirements are grouped by **Epic** (E1–E8). Each has a stable ID used across
 | FR-6.1 | Language selector sets the speech-recognition language. | P2 |
 | FR-6.2 | Intent parsing works for the selected language (via LLM). | P2 |
 | FR-6.3 | Ship **at least 2** languages beyond English (e.g., Hindi, Spanish). | P2 |
+| FR-6.4 | The **same selector localizes the UI** — all chrome, category headers, feedback toasts, and example prompts translate, so one control drives both the interface and the recognition locale. | P2 |
 
 ### E7 — UI/UX & Visual Feedback
 | ID | Requirement | Priority |

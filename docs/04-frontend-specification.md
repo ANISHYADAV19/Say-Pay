@@ -50,7 +50,7 @@
 ```
 
 **Regions:**
-- **Header** — product name; language dropdown (stretch, FR-6.1); optional "clear list" in overflow.
+- **Header** — product name; language dropdown (stretch, FR-6.1/6.4 — drives both the recognition locale *and* the UI language via the `useT()` i18n hook); optional "clear list" in overflow.
 - **Status line** — live transcript + mic state; doubles as the ARIA live region (NFR-4).
 - **Suggestions strip** — scrollable chips (FR-4.x); hidden when empty.
 - **List** — grouped by category (FR-3.4); each row has name, qty/unit, and a row menu (check off / edit / delete → FR-3.5).

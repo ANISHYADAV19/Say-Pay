@@ -1,8 +1,10 @@
 import { GlobeIcon } from './icons.jsx'
+import { useT } from '../i18n/useT.js'
 
 /**
- * Recognition language picker (SP-022, FR-6.1). Sets the BCP-47 tag passed to
- * the Web Speech API; the LLM fallback handles non-English transcripts.
+ * Language picker (SP-022, FR-6.1/6.4). Sets the BCP-47 tag passed to the Web
+ * Speech API for recognition AND drives the UI language (via useT); the LLM
+ * fallback handles non-English transcripts.
  */
 export const LANGUAGES = [
   { code: 'en-US', label: 'English' },
@@ -14,10 +16,11 @@ export const LANGUAGES = [
 ]
 
 export default function LanguageSelect({ value, onChange }) {
+  const { t } = useT()
   return (
     <label className="relative flex items-center">
       <GlobeIcon className="pointer-events-none absolute left-2.5 text-stone-500 dark:text-stone-400" />
-      <span className="sr-only">Recognition language</span>
+      <span className="sr-only">{t('lang.label')}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}

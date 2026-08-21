@@ -1,19 +1,22 @@
 import { cx } from '../utils/cx.js'
 import { MicIcon, StopIcon, SpinnerIcon } from './icons.jsx'
+import { useT } from '../i18n/useT.js'
 
 /**
  * Primary control (SP-004, FR-1.1/7.2). Fixed bottom-center FAB with
  * idle / listening / processing / unavailable states. Keyboard-operable
  * (native button — Space/Enter), and exposes state via aria-pressed + label.
  */
-const LABELS = {
-  idle: 'Tap to speak',
-  listening: 'Listening… tap to stop',
-  processing: 'Thinking…',
-  unavailable: 'Voice unavailable',
+const LABEL_KEYS = {
+  idle: 'mic.idle',
+  listening: 'mic.listening',
+  processing: 'mic.processing',
+  unavailable: 'mic.unavailable',
 }
 
 export default function MicButton({ state = 'idle', onToggle }) {
+  const { t } = useT()
+  const label = t(LABEL_KEYS[state])
   const listening = state === 'listening'
   const processing = state === 'processing'
   const unavailable = state === 'unavailable'
@@ -26,7 +29,7 @@ export default function MicButton({ state = 'idle', onToggle }) {
         onClick={onToggle}
         disabled={disabled}
         aria-pressed={listening}
-        aria-label={LABELS[state]}
+        aria-label={label}
         className={cx(
           'pointer-events-auto relative grid h-[72px] w-[72px] place-items-center rounded-full text-white shadow-lg outline-none transition',
           'focus-visible:ring-4 focus-visible:ring-accent/40',
@@ -47,7 +50,7 @@ export default function MicButton({ state = 'idle', onToggle }) {
         )}
       </button>
       <span className="pointer-events-none text-xs font-medium text-stone-500 dark:text-stone-400">
-        {LABELS[state]}
+        {label}
       </span>
     </div>
   )

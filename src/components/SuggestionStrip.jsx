@@ -1,5 +1,6 @@
 import { cx } from '../utils/cx.js'
 import { PlusIcon } from './icons.jsx'
+import { useT } from '../i18n/useT.js'
 
 /**
  * Suggestion chips (SP-019, FR-4.4). Horizontally scrollable; each chip adds
@@ -7,28 +8,30 @@ import { PlusIcon } from './icons.jsx'
  * reorder). Renders nothing when there are no suggestions.
  */
 const SOURCE_META = {
-  substitute: { tag: 'Swap', dot: 'bg-accent' },
-  seasonal: { tag: 'In season', dot: 'bg-amber-500' },
-  reorder: { tag: 'Reorder', dot: 'bg-violet-500' },
+  substitute: { tagKey: 'suggestions.swap', dot: 'bg-accent' },
+  seasonal: { tagKey: 'suggestions.season', dot: 'bg-amber-500' },
+  reorder: { tagKey: 'suggestions.reorder', dot: 'bg-violet-500' },
 }
 
 export default function SuggestionStrip({ suggestions, onAdd }) {
+  const { t } = useT()
   if (!suggestions || suggestions.length === 0) return null
 
   return (
-    <section aria-label="Suggestions" className="space-y-2">
+    <section aria-label={t('suggestions.title')} className="space-y-2">
       <h2 className="px-1 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
-        Suggestions
+        {t('suggestions.title')}
       </h2>
       <ul className="flex snap-x gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {suggestions.map((s) => {
           const meta = SOURCE_META[s.source] || SOURCE_META.substitute
+          const tag = t(meta.tagKey)
           return (
             <li key={s.id} className="snap-start">
               <button
                 type="button"
                 onClick={() => onAdd(s)}
-                title={`${meta.tag}: add ${s.label}`}
+                title={t('suggestions.addAction', { tag, label: s.label })}
                 className={cx(
                   'flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-3 pr-2 text-sm font-medium transition',
                   'border-stone-200 bg-white text-stone-800 hover:border-accent hover:text-accent',

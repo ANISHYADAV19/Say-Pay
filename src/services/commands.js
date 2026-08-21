@@ -1,11 +1,13 @@
 import { CATEGORY_LABELS } from './command.js'
+import { t, DEFAULT_LANG } from '../i18n/strings.js'
 
 /**
  * Command execution + user-facing feedback (SP-014).
  *
  * `applyCommand` maps a Command onto store actions (search is handled by the
  * caller, which owns the catalog + results UI). `describeCommand` produces the
- * toast/announcement copy so feedback is consistent everywhere (FR-7.2).
+ * toast/announcement copy so feedback is consistent everywhere (FR-7.2), and is
+ * localized to the active language (FR-6.4) — item names stay as spoken/typed.
  */
 
 const qtyLabel = (cmd) => {
@@ -54,40 +56,46 @@ export function applyCommand(command, actions, { existingNames = [] } = {}) {
 /**
  * @returns {{ type: 'success'|'info'|'error', message: string }}
  */
-export function describeCommand(command, { changed = true, resultCount = null } = {}) {
+export function describeCommand(command, { changed = true, resultCount = null, lang = DEFAULT_LANG } = {}) {
   switch (command.action) {
     case 'add':
-      return { type: 'success', message: `Added ${qtyLabel(command)}${command.item}` }
+      return {
+        type: 'success',
+        message: t('toast.added', lang, { name: `${qtyLabel(command)}${command.item}` }),
+      }
 
     case 'remove':
       return changed
-        ? { type: 'success', message: `Removed ${command.item}` }
-        : { type: 'info', message: `“${command.item}” wasn't on your list` }
+        ? { type: 'success', message: t('cmd.removed', lang, { name: command.item }) }
+        : { type: 'info', message: t('cmd.notOnList', lang, { name: command.item }) }
 
     case 'update':
       return changed
-        ? { type: 'success', message: `Updated ${command.item} to ${command.quantity}` }
-        : { type: 'info', message: `“${command.item}” isn't on your list yet` }
+        ? { type: 'success', message: t('cmd.updated', lang, { name: command.item, qty: command.quantity }) }
+        : { type: 'info', message: t('cmd.notOnListYet', lang, { name: command.item }) }
 
     case 'clear':
-      return { type: 'success', message: 'Cleared your list' }
+      return { type: 'success', message: t('cmd.cleared', lang) }
 
     case 'search': {
       const label =
         command.item ||
         (command.filters?.brand ? command.filters.brand : '') ||
-        'items'
+        t('search.itemsFallback', lang)
       if (resultCount === 0) {
-        return { type: 'info', message: `No matches for “${label}”` }
+        return { type: 'info', message: t('search.noMatches', lang, { label }) }
       }
-      return { type: 'info', message: `Found ${resultCount} result${resultCount === 1 ? '' : 's'} for “${label}”` }
+      return {
+        type: 'info',
+        message: t(resultCount === 1 ? 'cmd.foundOne' : 'cmd.foundOther', lang, {
+          count: resultCount,
+          label,
+        }),
+      }
     }
 
     default:
-      return {
-        type: 'error',
-        message: "I didn't catch that — try “add milk” or “remove bread”.",
-      }
+      return { type: 'error', message: t('cmd.unknown', lang) }
   }
 }
 
