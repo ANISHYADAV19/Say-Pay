@@ -14,14 +14,14 @@ export default function StatusBar({ listening, processing, interim, lastTranscri
       ? t('status.listening')
       : t('status.ready')
   const dotClass = processing
-    ? 'bg-amber-500 animate-pulse'
+    ? 'bg-amber-500 animate-pulse shadow-[0_0_0_3px_rgba(245,158,11,0.22)]'
     : listening
-      ? 'bg-red-500 animate-pulse'
+      ? 'bg-red-500 animate-pulse shadow-[0_0_0_3px_rgba(239,68,68,0.22)]'
       : 'bg-stone-300 dark:bg-stone-600'
 
   const shown = interim || lastTranscript
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white/70 px-4 py-3 backdrop-blur dark:border-stone-800 dark:bg-stone-900/60">
+    <div className="glass rounded-2xl px-4 py-3">
       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">
         <span className={cx('h-2.5 w-2.5 rounded-full', dotClass)} aria-hidden />
         {stateWord}

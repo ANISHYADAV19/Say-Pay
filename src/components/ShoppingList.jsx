@@ -33,7 +33,7 @@ export default function ShoppingList() {
         <button
           type="button"
           onClick={handleClear}
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-stone-500 transition hover:bg-red-50 hover:text-red-600 dark:text-stone-400 dark:hover:bg-red-950/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/40"
+          className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-stone-500 transition hover:bg-red-500/10 hover:text-red-600 dark:text-stone-400 dark:hover:bg-red-500/15 dark:hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/40"
         >
           <TrashIcon className="text-sm" />
           {t('list.clear')}

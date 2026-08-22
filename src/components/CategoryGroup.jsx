@@ -13,7 +13,7 @@ export default function CategoryGroup({ group, justChangedId, onToggle, onStep, 
     <section aria-label={label} className="space-y-1.5">
       <h3 className="flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
         {label}
-        <span className="rounded-full bg-stone-200 px-1.5 py-0.5 text-[0.65rem] tabular-nums text-stone-600 dark:bg-stone-800 dark:text-stone-300">
+        <span className="rounded-full border border-white/50 bg-white/45 px-1.5 py-0.5 text-[0.65rem] tabular-nums text-stone-600 dark:border-white/[0.07] dark:bg-white/[0.07] dark:text-stone-300">
           {group.items.length}
         </span>
       </h3>

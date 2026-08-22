@@ -19,7 +19,7 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       aria-label={label}
       title={label}
-      className="grid h-9 w-9 place-items-center rounded-lg border border-stone-300 bg-white text-[1.05rem] text-stone-600 outline-none transition hover:text-accent focus:border-accent focus:ring-2 focus:ring-accent/30 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:text-accent"
+      className="glass glass-interactive grid h-9 w-9 place-items-center rounded-lg text-[1.05rem] text-stone-600 outline-none hover:text-accent focus:ring-2 focus:ring-accent/30 dark:text-stone-300 dark:hover:text-accent"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}
     </button>

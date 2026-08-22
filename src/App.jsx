@@ -16,6 +16,7 @@ import SearchResults from './components/SearchResults.jsx'
 import EmptyState from './components/EmptyState.jsx'
 import MicButton from './components/MicButton.jsx'
 import ToastHost from './components/ToastHost.jsx'
+import AuroraBackground from './components/AuroraBackground.jsx'
 
 /**
  * App shell (SP-024/025). Wires the store to the voice + command pipeline and
@@ -101,7 +102,9 @@ function Shell() {
   const onAddFromSearch = useCallback((p) => addByName(p.name, p.category), [addByName])
 
   return (
-    <div className="min-h-dvh bg-stone-50 text-stone-900 dark:bg-[#0B0F14] dark:text-stone-100">
+    <div className="relative min-h-dvh bg-stone-50 text-stone-900 dark:bg-[#0B0F14] dark:text-stone-100">
+      <AuroraBackground />
+
       <div className="mx-auto flex min-h-dvh max-w-md flex-col gap-4 px-4 pb-44 pt-5">
         <Header language={language} onLanguageChange={setLanguage} />
 

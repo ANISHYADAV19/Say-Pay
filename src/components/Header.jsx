@@ -11,11 +11,14 @@ export default function Header({ language, onLanguageChange }) {
   return (
     <header className="flex items-center justify-between gap-3">
       <div className="flex items-center gap-2.5">
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-accent text-lg font-bold text-white">
-          S
+        <span className="relative grid h-9 w-9 place-items-center">
+          <span aria-hidden className="absolute inset-0 rounded-xl bg-accent/40 blur-md" />
+          <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-accent text-lg font-bold text-white ring-1 ring-inset ring-white/25">
+            S
+          </span>
         </span>
         <div>
-          <h1 className="text-lg font-bold leading-none text-stone-900 dark:text-stone-100">
+          <h1 className="text-lg font-bold leading-none tracking-tight text-stone-900 dark:text-stone-100">
             Say &amp; Pay
           </h1>
           <p className="text-xs text-stone-500 dark:text-stone-400">{t('header.subtitle')}</p>

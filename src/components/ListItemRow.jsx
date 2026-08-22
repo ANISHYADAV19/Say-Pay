@@ -15,10 +15,10 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
   return (
     <li
       className={cx(
-        'flex items-center gap-3 rounded-xl border px-3 py-2.5 transition',
+        'flex items-center gap-3 rounded-xl px-3 py-2.5 transition',
         checked
-          ? 'border-transparent bg-stone-100 dark:bg-stone-800/50'
-          : 'border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900',
+          ? 'border border-white/40 bg-white/25 dark:border-white/[0.04] dark:bg-white/[0.02]'
+          : 'glass',
         justChanged && 'animate-flash',
       )}
     >
@@ -31,8 +31,8 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
         className={cx(
           'grid h-6 w-6 shrink-0 place-items-center rounded-md border-2 transition',
           checked
-            ? 'border-accent bg-accent text-white'
-            : 'border-stone-300 text-transparent hover:border-accent dark:border-stone-600',
+            ? 'border-accent bg-accent text-white shadow-[0_2px_8px_-2px_rgba(13,148,136,0.7)]'
+            : 'border-stone-400/70 bg-white/40 text-transparent hover:border-accent dark:border-stone-500/60 dark:bg-white/5',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
         )}
       >
@@ -56,13 +56,13 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
       </div>
 
       {!checked && (
-        <div className="flex items-center gap-1 rounded-lg bg-stone-100 p-0.5 dark:bg-stone-800">
+        <div className="flex items-center gap-1 rounded-lg border border-white/50 bg-white/45 p-0.5 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.6)] dark:border-white/[0.06] dark:bg-black/20 dark:shadow-none">
           <button
             type="button"
             onClick={() => onStep(id, quantity - 1)}
             disabled={quantity <= 1}
             aria-label={t('row.decrease', { name })}
-            className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white disabled:opacity-30 dark:text-stone-300 dark:hover:bg-stone-700"
+            className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent disabled:opacity-30 disabled:hover:bg-transparent dark:text-stone-300 dark:hover:bg-white/10"
           >
             <MinusIcon className="text-sm" />
           </button>
@@ -73,7 +73,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
             type="button"
             onClick={() => onStep(id, quantity + 1)}
             aria-label={t('row.increase', { name })}
-            className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white dark:text-stone-300 dark:hover:bg-stone-700"
+            className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent dark:text-stone-300 dark:hover:bg-white/10"
           >
             <PlusIcon className="text-sm" />
           </button>
@@ -84,7 +84,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
         type="button"
         onClick={() => onDelete(id)}
         aria-label={t('row.delete', { name })}
-        className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40"
+        className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-500/10 hover:text-red-600 dark:hover:bg-red-500/15 dark:hover:text-red-400"
       >
         <TrashIcon className="text-base" />
       </button>

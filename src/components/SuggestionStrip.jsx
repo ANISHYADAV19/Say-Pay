@@ -33,15 +33,14 @@ export default function SuggestionStrip({ suggestions, onAdd }) {
                 onClick={() => onAdd(s)}
                 title={t('suggestions.addAction', { tag, label: s.label })}
                 className={cx(
-                  'flex items-center gap-2 whitespace-nowrap rounded-full border py-2 pl-3 pr-2 text-sm font-medium transition',
-                  'border-stone-200 bg-white text-stone-800 hover:border-accent hover:text-accent',
-                  'dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:border-accent',
+                  'glass glass-interactive flex items-center gap-2 whitespace-nowrap rounded-full py-2 pl-3 pr-2 text-sm font-medium',
+                  'text-stone-800 hover:text-accent dark:text-stone-100 dark:hover:text-accent',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
                 )}
               >
                 <span className={cx('h-2 w-2 rounded-full', meta.dot)} aria-hidden />
                 {s.label}
-                <span className="grid h-5 w-5 place-items-center rounded-full bg-accent/10 text-accent">
+                <span className="grid h-5 w-5 place-items-center rounded-full bg-accent/15 text-accent">
                   <PlusIcon className="text-sm" />
                 </span>
               </button>

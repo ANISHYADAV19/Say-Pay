@@ -29,3 +29,82 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@layer components {
+  /* Frosted-glass surface, used for every card/row/chip in the app.
+     Three parts do the work: a translucent fill so the aurora reads through,
+     a hairline border, and an inset top highlight — that highlight is what
+     makes the edge look like a lit pane rather than a flat tinted box.
+
+     Note there's no backdrop-filter here on purpose. AuroraBackground already
+     blurs the whole viewport once; blurring again per element would cost a
+     lot on long lists and change nothing visually. */
+  .glass {
+    /* Exposed as a variable so the `flash` keyframe can compose the highlight
+       glow *on top of* the glass depth instead of replacing it. */
+    --glass-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.75),
+      0 1px 2px 0 rgb(15 23 42 / 0.04),
+      0 10px 26px -14px rgb(15 23 42 / 0.14);
+    border: 1px solid rgb(255 255 255 / 0.65);
+    background-color: rgb(255 255 255 / 0.55);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .dark .glass {
+    --glass-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.08),
+      0 1px 2px 0 rgb(0 0 0 / 0.28),
+      0 10px 26px -14px rgb(0 0 0 / 0.5);
+    border-color: rgb(255 255 255 / 0.09);
+    background-color: rgb(255 255 255 / 0.06);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Lifts on hover — for glass surfaces that are also buttons. */
+  .glass-interactive {
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  .glass-interactive:hover:not(:disabled) {
+    border-color: rgb(13 148 136 / 0.45);
+    background-color: rgb(255 255 255 / 0.75);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.85),
+      0 1px 2px 0 rgb(15 23 42 / 0.05),
+      0 14px 30px -14px rgb(13 148 136 / 0.3);
+  }
+
+  .dark .glass-interactive:hover:not(:disabled) {
+    border-color: rgb(45 212 191 / 0.4);
+    background-color: rgb(255 255 255 / 0.11);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.12),
+      0 14px 30px -14px rgb(13 148 136 / 0.35);
+  }
+
+  /* Floating surfaces (toasts, the mic tray) sit above *content*, not just the
+     aurora, so these genuinely need their own blur to frost what's behind
+     them. Only a couple of elements ever use it. */
+  .glass-floating {
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid rgb(255 255 255 / 0.7);
+    background-color: rgb(255 255 255 / 0.7);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.8),
+      0 16px 40px -16px rgb(15 23 42 / 0.28);
+  }
+
+  .dark .glass-floating {
+    border-color: rgb(255 255 255 / 0.12);
+    background-color: rgb(23 23 23 / 0.72);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.1),
+      0 16px 40px -16px rgb(0 0 0 / 0.65);
+  }
+}

@@ -24,7 +24,7 @@ export default function LanguageSelect({ value, onChange }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none rounded-lg border border-stone-300 bg-white py-1.5 pl-8 pr-7 text-sm font-medium text-stone-700 outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200"
+        className="glass appearance-none rounded-lg py-1.5 pl-8 pr-7 text-sm font-medium text-stone-700 outline-none transition focus:border-accent/70 focus:ring-2 focus:ring-accent/25 dark:text-stone-200"
       >
         {LANGUAGES.map((l) => (
           <option key={l.code} value={l.code}>

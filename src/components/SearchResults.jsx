@@ -42,14 +42,14 @@ export default function SearchResults({ search, onAdd, onClose }) {
           type="button"
           onClick={onClose}
           aria-label={t('search.close')}
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-stone-500 transition hover:bg-stone-100 dark:hover:bg-stone-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+          className="glass glass-interactive grid h-9 w-9 shrink-0 place-items-center rounded-lg text-stone-500 hover:text-accent dark:text-stone-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           <CloseIcon />
         </button>
       </div>
 
       {results.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-stone-300 py-10 text-center text-stone-500 dark:border-stone-700 dark:text-stone-400">
+        <div className="rounded-2xl border border-dashed border-stone-400/50 bg-white/20 py-10 text-center text-stone-500 dark:border-stone-600/50 dark:bg-white/[0.03] dark:text-stone-400">
           <p className="font-medium">{t('search.noMatches', { label })}</p>
           <p className="mt-1 text-sm">{t('search.tryOther')}</p>
         </div>
@@ -58,7 +58,7 @@ export default function SearchResults({ search, onAdd, onClose }) {
           {results.map((p) => (
             <li
               key={p.id}
-              className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-3 py-2.5 dark:border-stone-800 dark:bg-stone-900"
+              className="glass flex items-center gap-3 rounded-xl px-3 py-2.5"
             >
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium text-stone-900 dark:text-stone-100">
@@ -77,7 +77,8 @@ export default function SearchResults({ search, onAdd, onClose }) {
                 aria-label={t('search.addAria', { name: p.name })}
                 className={cx(
                   'flex shrink-0 items-center gap-1 rounded-lg bg-accent px-2.5 py-1.5 text-sm font-medium text-white transition',
-                  'hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
+                  'ring-1 ring-inset ring-white/25 shadow-[0_4px_14px_-4px_rgba(13,148,136,0.75)]',
+                  'hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
                 )}
               >
                 <PlusIcon className="text-sm" />
