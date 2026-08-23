@@ -4,6 +4,7 @@ import { parseCommand } from '../services/parser.js'
 import { applyCommand, describeCommand } from '../services/commands.js'
 import { filterCatalog } from '../services/catalog.js'
 import { t } from '../i18n/strings.js'
+import { displayName } from '../services/terms.js'
 
 /**
  * The end-to-end command pipeline (SP-014): transcript -> parse -> execute ->
@@ -36,6 +37,7 @@ export function useCommandRunner({ language, pushToast, announce, setSearch }) {
       try {
         const existingNames = list.items.map((it) => it.name)
         const { command } = await parseCommand(text, language, { signal: ac.signal })
+        const term = (name) => displayName(name, language)
 
         if (command.action === 'search') {
           const results = filterCatalog({ query: command.item, ...command.filters })
@@ -44,14 +46,14 @@ export function useCommandRunner({ language, pushToast, announce, setSearch }) {
             filters: command.filters || {},
             results,
           })
-          const fb = describeCommand(command, { resultCount: results.length, lang: language })
+          const fb = describeCommand(command, { resultCount: results.length, lang: language, term })
           pushToast(fb)
           announce(fb.message)
           return command
         }
 
         if (command.action === 'unknown') {
-          const fb = describeCommand(command, { lang: language })
+          const fb = describeCommand(command, { lang: language, term })
           pushToast(fb)
           announce(fb.message)
           return command
@@ -60,7 +62,7 @@ export function useCommandRunner({ language, pushToast, announce, setSearch }) {
         // list-mutating command
         const { changed } = applyCommand(command, list, { existingNames })
         setSearch(null) // return focus to the list
-        const fb = describeCommand(command, { changed, lang: language })
+        const fb = describeCommand(command, { changed, lang: language, term })
         pushToast(fb)
         announce(fb.message)
         return command

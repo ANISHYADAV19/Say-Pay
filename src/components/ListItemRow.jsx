@@ -2,6 +2,7 @@ import { cx } from '../utils/cx.js'
 import { titleCase } from '../utils/format.js'
 import { CheckIcon, TrashIcon, PlusIcon, MinusIcon } from './icons.jsx'
 import { useT } from '../i18n/useT.js'
+import { useTerm } from '../i18n/useTerm.js'
 
 /**
  * A single list row (SP-016, FR-3.x/7.5). Tap the checkbox to mark bought,
@@ -10,7 +11,9 @@ import { useT } from '../i18n/useT.js'
  */
 export default function ListItemRow({ item, justChanged, onToggle, onStep, onDelete }) {
   const { t } = useT()
+  const { term } = useTerm()
   const { id, name, quantity, unit, checked } = item
+  const displayLabel = titleCase(term(name))
 
   return (
     <li
@@ -27,7 +30,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
         onClick={() => onToggle(id)}
         role="checkbox"
         aria-checked={checked}
-        aria-label={t(checked ? 'row.markNotBought' : 'row.markBought', { name })}
+        aria-label={t(checked ? 'row.markNotBought' : 'row.markBought', { name: displayLabel })}
         className={cx(
           'grid h-6 w-6 shrink-0 place-items-center rounded-md border-2 transition',
           checked
@@ -48,7 +51,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
               : 'text-stone-900 dark:text-stone-100',
           )}
         >
-          {titleCase(name)}
+          {displayLabel}
         </p>
         {unit && !checked && (
           <p className="text-xs text-stone-400 dark:text-stone-500">{unit}</p>
@@ -61,7 +64,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
             type="button"
             onClick={() => onStep(id, quantity - 1)}
             disabled={quantity <= 1}
-            aria-label={t('row.decrease', { name })}
+            aria-label={t('row.decrease', { name: displayLabel })}
             className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent disabled:opacity-30 disabled:hover:bg-transparent dark:text-stone-300 dark:hover:bg-white/10"
           >
             <MinusIcon className="text-sm" />
@@ -72,7 +75,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
           <button
             type="button"
             onClick={() => onStep(id, quantity + 1)}
-            aria-label={t('row.increase', { name })}
+            aria-label={t('row.increase', { name: displayLabel })}
             className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent dark:text-stone-300 dark:hover:bg-white/10"
           >
             <PlusIcon className="text-sm" />
@@ -83,7 +86,7 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
       <button
         type="button"
         onClick={() => onDelete(id)}
-        aria-label={t('row.delete', { name })}
+        aria-label={t('row.delete', { name: displayLabel })}
         className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-500/10 hover:text-red-600 dark:hover:bg-red-500/15 dark:hover:text-red-400"
       >
         <TrashIcon className="text-base" />

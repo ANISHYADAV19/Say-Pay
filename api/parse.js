@@ -57,7 +57,7 @@ const systemPrompt = () =>
     '- "change/set X to N" => update. "find/search X" => search. "clear/empty list" => clear.',
     '- Choose the closest category from the fixed list; use "other" if unsure.',
     '- If the utterance is not a shopping command, return action "unknown".',
-    '- The utterance may be in any language; still return the schema (item in that language is fine).',
+    '- The utterance may be in any language; still return the schema (item in that language is fine, but prefer the common English noun for `item` if possible).',
   ].join('\n')
 
 async function callGemini({ transcript, language }) {

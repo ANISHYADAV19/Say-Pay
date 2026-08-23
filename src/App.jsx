@@ -6,6 +6,7 @@ import { useCommandRunner } from './hooks/useCommandRunner.js'
 import { computeSuggestions } from './services/suggestions.js'
 import { titleCase } from './utils/format.js'
 import { useT } from './i18n/useT.js'
+import { useTerm } from './i18n/useTerm.js'
 
 import Header from './components/Header.jsx'
 import StatusBar from './components/StatusBar.jsx'
@@ -40,6 +41,7 @@ const VOICE_ERROR_KEYS = {
 function Shell() {
   const { language, setLanguage, addItem, items, history } = useList()
   const { t } = useT()
+  const { term } = useTerm()
 
   const [search, setSearch] = useState(null) // { query, filters, results } | null
   const [lastTranscript, setLastTranscript] = useState('')
@@ -111,11 +113,11 @@ function Shell() {
   const addByName = useCallback(
     (name, category, unit = null) => {
       addItem({ name, category, unit })
-      const msg = t('toast.added', { name: titleCase(name) })
+      const msg = t('toast.added', { name: titleCase(term(name)) })
       push({ type: 'success', message: msg })
       announce(msg)
     },
-    [addItem, push, announce, t],
+    [addItem, push, announce, t, term],
   )
 
   const onAddSuggestion = useCallback((s) => addByName(s.item, s.category), [addByName])

@@ -1,5 +1,6 @@
 import categoriesData from '../data/categories.json'
 import { CATEGORIES } from './command.js'
+import { toCanonical } from './terms.js'
 
 /**
  * Auto-categorization (FR-2.4, SP-011).
@@ -32,24 +33,30 @@ const singularize = (w) => (w.length > 3 && w.endsWith('s') ? w.slice(0, -1) : w
  */
 export function categorize(name) {
   if (!name || typeof name !== 'string') return 'other'
-  const n = name.toLowerCase().trim().replace(/\s+/g, ' ')
-  if (!n) return 'other'
 
-  // 1) exact full-name match ("olive oil", "ice cream")
-  if (exact.has(n)) return exact.get(n)
+  const canonical = toCanonical(name)
+  const namesToTry = canonical ? [canonical, name] : [name]
 
-  // 2) multi-word keyword contained in the name ("frozen peas" in "bag of frozen peas")
-  for (const { kw, cat } of multiWord) {
-    if (n.includes(kw)) return cat
-  }
+  for (const rawName of namesToTry) {
+    const n = rawName.toLowerCase().trim().replace(/\s+/g, ' ')
+    if (!n) continue
 
-  // 3) token match — check each word and its singular form; head noun (last) wins ties
-  const tokens = n.split(' ')
-  for (let i = tokens.length - 1; i >= 0; i--) {
-    const t = tokens[i]
-    if (exact.has(t)) return exact.get(t)
-    const s = singularize(t)
-    if (exact.has(s)) return exact.get(s)
+    // 1) exact full-name match ("olive oil", "ice cream")
+    if (exact.has(n)) return exact.get(n)
+
+    // 2) multi-word keyword contained in the name ("frozen peas" in "bag of frozen peas")
+    for (const { kw, cat } of multiWord) {
+      if (n.includes(kw)) return cat
+    }
+
+    // 3) token match — check each word and its singular form; head noun (last) wins ties
+    const tokens = n.split(' ')
+    for (let i = tokens.length - 1; i >= 0; i--) {
+      const t = tokens[i]
+      if (exact.has(t)) return exact.get(t)
+      const s = singularize(t)
+      if (exact.has(s)) return exact.get(s)
+    }
   }
 
   return 'other'

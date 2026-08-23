@@ -3,8 +3,8 @@
  *
  * Structure is KEY-first: every key defines all supported languages, so a
  * missing translation is a structural (test-catchable) error, and `t()` can
- * always fall back to the default language. Item names and catalog product
- * names are user/content data and are NOT translated here — only UI chrome.
+ * always fall back to the default language. Item names are translated via
+ * terms.js. Catalog product names are content data and are NOT translated here.
  *
  * `{name}`-style placeholders are interpolated by `t(key, lang, vars)`.
  */

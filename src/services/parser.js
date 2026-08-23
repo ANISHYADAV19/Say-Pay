@@ -1,6 +1,7 @@
 import { parseRules } from './rules.js'
 import { normalizeCommand, LLM_FALLBACK_THRESHOLD } from './command.js'
 import { categorize } from './categorize.js'
+import { toCanonical } from './terms.js'
 
 /**
  * Parser orchestration (SP-010, FR-2.5, NFR-5).
@@ -56,6 +57,9 @@ export async function parseCommand(transcript, language = 'en-US', opts = {}) {
   if (raw) {
     // Re-validate on the client — never trust the LLM shape blindly.
     let cmd = normalizeCommand(raw, { transcript, language })
+    if (cmd.item) {
+      cmd.item = toCanonical(cmd.item, language) ?? cmd.item
+    }
     if ((cmd.action === 'add' || cmd.action === 'update') && cmd.category === 'other') {
       cmd = { ...cmd, category: categorize(cmd.item) }
     }

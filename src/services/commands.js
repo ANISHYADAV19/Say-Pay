@@ -56,30 +56,30 @@ export function applyCommand(command, actions, { existingNames = [] } = {}) {
 /**
  * @returns {{ type: 'success'|'info'|'error', message: string }}
  */
-export function describeCommand(command, { changed = true, resultCount = null, lang = DEFAULT_LANG } = {}) {
+export function describeCommand(command, { changed = true, resultCount = null, lang = DEFAULT_LANG, term = (x) => x } = {}) {
   switch (command.action) {
     case 'add':
       return {
         type: 'success',
-        message: t('toast.added', lang, { name: `${qtyLabel(command)}${command.item}` }),
+        message: t('toast.added', lang, { name: `${qtyLabel(command)}${term(command.item)}` }),
       }
 
     case 'remove':
       return changed
-        ? { type: 'success', message: t('cmd.removed', lang, { name: command.item }) }
-        : { type: 'info', message: t('cmd.notOnList', lang, { name: command.item }) }
+        ? { type: 'success', message: t('cmd.removed', lang, { name: term(command.item) }) }
+        : { type: 'info', message: t('cmd.notOnList', lang, { name: term(command.item) }) }
 
     case 'update':
       return changed
-        ? { type: 'success', message: t('cmd.updated', lang, { name: command.item, qty: command.quantity }) }
-        : { type: 'info', message: t('cmd.notOnListYet', lang, { name: command.item }) }
+        ? { type: 'success', message: t('cmd.updated', lang, { name: term(command.item), qty: command.quantity }) }
+        : { type: 'info', message: t('cmd.notOnListYet', lang, { name: term(command.item) }) }
 
     case 'clear':
       return { type: 'success', message: t('cmd.cleared', lang) }
 
     case 'search': {
       const label =
-        command.item ||
+        (command.item ? term(command.item) : '') ||
         (command.filters?.brand ? command.filters.brand : '') ||
         t('search.itemsFallback', lang)
       if (resultCount === 0) {

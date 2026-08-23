@@ -3,6 +3,7 @@ import { loadState, saveState } from '../services/storage.js'
 import { CATEGORIES } from '../services/command.js'
 import { categorize } from '../services/categorize.js'
 import { baseLang } from '../i18n/strings.js'
+import { toCanonical } from '../services/terms.js'
 
 /**
  * List store (SP-013). useReducer + Context — no external state lib needed at
@@ -62,7 +63,41 @@ function reducer(state, action) {
       // a stored theme of null means "no explicit choice" — keep the
       // system-derived default rather than clobbering it.
       const { theme, ...rest } = action.payload
-      return { ...state, ...rest, theme: theme === 'light' || theme === 'dark' ? theme : state.theme }
+
+      // Migrate items:
+      const items = (rest.items || []).map((it) => {
+        const canonicalName = toCanonical(it.name) ?? it.name
+        const category = it.category === 'other' ? categorize(canonicalName) : it.category
+        return {
+          ...it,
+          name: canonicalName,
+          category,
+        }
+      })
+
+      // Migrate history:
+      const history = {}
+      if (rest.history) {
+        for (const [key, entry] of Object.entries(rest.history)) {
+          if (!entry) continue
+          const canonicalName = toCanonical(entry.name) ?? entry.name
+          const canonicalKey = norm(canonicalName)
+          const existing = history[canonicalKey]
+          history[canonicalKey] = {
+            name: canonicalName,
+            count: (existing?.count || 0) + entry.count,
+            lastAdded: Math.max(existing?.lastAdded || 0, entry.lastAdded || 0),
+          }
+        }
+      }
+
+      return {
+        ...state,
+        ...rest,
+        items,
+        history,
+        theme: theme === 'light' || theme === 'dark' ? theme : state.theme
+      }
     }
 
     case 'add': {

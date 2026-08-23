@@ -1,5 +1,7 @@
 import { normalizeCommand } from './command.js'
 import { categorize } from './categorize.js'
+import { compiledFor } from './lexicons/index.js'
+import { toCanonical } from './terms.js'
 
 /**
  * Rule-based intent parser (SP-008, FR-2.2/2.3/2.5).
@@ -12,155 +14,185 @@ import { categorize } from './categorize.js'
  * confidence, and the UI asks the user to rephrase.
  */
 
-const NUMBER_WORDS = {
-  a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7,
-  eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, dozen: 12, couple: 2,
-  few: 3, several: 3, half: 1,
+function foldDigits(text, digits) {
+  if (!digits) return text
+  let out = ''
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i]
+    const idx = digits.indexOf(c)
+    if (idx >= 0) {
+      out += idx.toString()
+    } else {
+      out += c
+    }
+  }
+  return out
 }
 
-const UNITS = new Set([
-  'bottle', 'bottles', 'can', 'cans', 'box', 'boxes', 'bag', 'bags', 'carton',
-  'cartons', 'pack', 'packs', 'packet', 'packets', 'jar', 'jars', 'loaf',
-  'loaves', 'bunch', 'bunches', 'dozen', 'kg', 'kilogram', 'kilograms', 'kilo',
-  'kilos', 'g', 'gram', 'grams', 'gm', 'l', 'litre', 'litres', 'liter',
-  'liters', 'ml', 'lb', 'lbs', 'pound', 'pounds', 'piece', 'pieces', 'pcs',
-  'slice', 'slices', 'cup', 'cups', 'tin', 'tins', 'roll', 'rolls', 'bar',
-  'bars', 'tube', 'tubes', 'stick', 'sticks', 'head', 'heads', 'dozen', 'pint',
-  'pints', 'quart', 'quarts', 'gallon', 'gallons',
-])
+const stripListPhrases = (s, lex) => {
+  if (lex.listPhrasesRe) {
+    s = s.replace(lex.listPhrasesRe, ' ')
+  }
+  return s.replace(/\s+/g, ' ').trim()
+}
 
-// Verb groups. Order of checking matters (see detectAction).
-// The *_RE forms (no /g) are for detection; the *_STRIP_RE forms (with /g)
-// remove EVERY verb occurrence when isolating the item text.
-const REMOVE_RE = /\b(remove|delete|drop|discard|erase)\b|\btake\s+(?:off|out)\b|\bget\s+rid\s+of\b|\bcross\s+(?:off|out)\b/
-const REMOVE_STRIP_RE = /\b(remove|delete|drop|discard|erase)\b|\btake\s+(?:off|out)\b|\bget\s+rid\s+of\b|\bcross\s+(?:off|out)\b/g
-const CLEAR_RE = /\b(clear|empty|reset|wipe)\b|\bstart\s+over\b|\b(delete|clear|remove)\s+(?:everything|all|the\s+whole\s+list)\b/
-const SEARCH_RE = /\b(find|search|look\s+for|show\s+me|look\s+up|do\s+you\s+have|any)\b/
-const ADD_RE = /\b(add|need|want|buy|get|grab|put|include|purchase|remember)\b|\bpick\s+up\b|\bi'?d\s+like\b|\bgimme\b|\bwanna\b|\bgotta\b/
-const ADD_STRIP_RE = /\b(add|need|want\s+to\s+buy|want|buy|get\s+me|get|grab|put|include|purchase|remember)\b|\bpick\s+up\b|\bwould\s+like\s+to\b|\bwould\s+like\b|\bi'?d\s+like\b|\bi'?ll\b|\bwanna\b|\bgotta\b|\bhave\s+to\b/g
-
-// leading/trailing words that are never part of an item name
-const FILLER = new Set([
-  'of', 'some', 'the', 'a', 'an', 'please', 'for', 'me', 'my', 'to', 'i', 'we', 'you',
-])
-
-const stripListPhrases = (s) =>
-  s
-    .replace(/\b(to|from|on|in|off)\s+(my|the)\s+(shopping\s+)?(list|cart|basket)\b/g, ' ')
-    .replace(/\b(my|the)\s+(shopping\s+)?(list|cart|basket)\b/g, ' ')
-    .replace(/\bplease\b/g, ' ')
-    .replace(/\bfor\s+me\b/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-
-const cleanItem = (s) => {
-  let tokens = stripListPhrases(s).split(' ').filter(Boolean)
-  // trim leading/trailing filler words
-  while (tokens.length && FILLER.has(tokens[0])) tokens.shift()
-  while (tokens.length && FILLER.has(tokens[tokens.length - 1])) tokens.pop()
-  return tokens.join(' ').trim()
+const cleanItem = (s, lex) => {
+  s = stripListPhrases(s, lex)
+  if (lex.spaced) {
+    let tokens = s.split(' ').filter(Boolean)
+    // trim leading/trailing filler words
+    while (tokens.length && lex.filler.has(tokens[0])) tokens.shift()
+    while (tokens.length && lex.filler.has(tokens[tokens.length - 1])) tokens.pop()
+    return tokens.join(' ').trim()
+  } else {
+    // unspaced: strip filler anywhere
+    if (lex.fillerRe) {
+      s = s.replace(lex.fillerRe, '')
+    }
+    return s.replace(/\s+/g, '').trim()
+  }
 }
 
 /** Pull the first quantity (digit or number-word), optional unit, and item. */
-function extractQtyUnitItem(phrase) {
-  const tokens = phrase.split(' ').filter(Boolean)
-  let quantity = 1
-  let unit = null
-  let qtyIndex = -1
+function extractQtyUnitItem(phrase, lex) {
+  if (lex.spaced) {
+    const tokens = phrase.split(' ').filter(Boolean)
+    let quantity = 1
+    let unit = null
+    let qtyIndex = -1
 
-  for (let i = 0; i < tokens.length; i++) {
-    const t = tokens[i].replace(/[^\w.]/g, '')
-    if (/^\d+(\.\d+)?$/.test(t)) {
-      quantity = parseFloat(t)
-      qtyIndex = i
-      break
+    for (let i = 0; i < tokens.length; i++) {
+      const t = tokens[i].replace(/[^\w.]/g, '')
+      if (/^\d+(\.\d+)?$/.test(t)) {
+        quantity = parseFloat(t)
+        qtyIndex = i
+        break
+      }
+      if (lex.numbers.has(t)) {
+        quantity = lex.numbers.get(t)
+        qtyIndex = i
+        break
+      }
     }
-    if (Object.prototype.hasOwnProperty.call(NUMBER_WORDS, t)) {
-      quantity = NUMBER_WORDS[t]
-      qtyIndex = i
-      break
+
+    let itemTokens = tokens.slice()
+    if (qtyIndex >= 0) {
+      // consume the qty token, and a following unit + optional partitive
+      const consume = new Set([qtyIndex])
+      const next = (tokens[qtyIndex + 1] || '').toLowerCase()
+      if (lex.units.has(next)) {
+        unit = next
+        consume.add(qtyIndex + 1)
+        const nextNext = (tokens[qtyIndex + 2] || '').toLowerCase()
+        if (lex.partitive.has(nextNext)) {
+          consume.add(qtyIndex + 2)
+        }
+      } else if (lex.partitive.has(next)) {
+        consume.add(qtyIndex + 1)
+      }
+      itemTokens = tokens.filter((_, i) => !consume.has(i))
     }
+
+    const item = cleanItem(itemTokens.join(' '), lex)
+    return { quantity: Math.max(1, Math.round(quantity)), unit, item }
+  } else {
+    // Unspaced (Chinese): pull quantity via pattern rather than scanning tokens
+    let quantity = 1
+    let unit = null
+    let item = phrase
+
+    const qtyMatch = phrase.match(lex.qtyRe)
+    if (qtyMatch) {
+      const rawQty = qtyMatch[1]
+      if (/^\d+(\.\d+)?$/.test(rawQty)) {
+        quantity = parseFloat(rawQty)
+      } else if (lex.numbers.has(rawQty)) {
+        quantity = lex.numbers.get(rawQty)
+      }
+
+      const startIdx = qtyMatch.index
+      const endIdx = startIdx + rawQty.length
+      const remaining = phrase.slice(endIdx)
+
+      let unitLength = 0
+      if (lex.unitAtStartRe) {
+        const unitMatch = remaining.match(lex.unitAtStartRe)
+        if (unitMatch) {
+          unit = unitMatch[1]
+          unitLength = unit.length
+        }
+      }
+
+      item = phrase.slice(0, startIdx) + phrase.slice(endIdx + unitLength)
+    }
+
+    item = cleanItem(item, lex)
+    return { quantity: Math.max(1, Math.round(quantity)), unit, item }
   }
-
-  let itemTokens = tokens.slice()
-  if (qtyIndex >= 0) {
-    // consume the qty token, and a following unit + optional "of"
-    const consume = new Set([qtyIndex])
-    const next = (tokens[qtyIndex + 1] || '').toLowerCase()
-    if (UNITS.has(next)) {
-      unit = next
-      consume.add(qtyIndex + 1)
-      if ((tokens[qtyIndex + 2] || '').toLowerCase() === 'of') consume.add(qtyIndex + 2)
-    } else if (next === 'of') {
-      consume.add(qtyIndex + 1)
-    }
-    itemTokens = tokens.filter((_, i) => !consume.has(i))
-  }
-
-  const item = cleanItem(itemTokens.join(' '))
-  return { quantity: Math.max(1, Math.round(quantity)), unit, item }
 }
 
 /** Extract search filters (price/brand/size) and a cleaned query. */
-function extractSearch(text) {
+function extractSearch(text, lex) {
   const filters = {}
   let q = text
 
-  const price =
-    q.match(/\bunder\s*\$?\s*(\d+(?:\.\d+)?)/) ||
-    q.match(/\bbelow\s*\$?\s*(\d+(?:\.\d+)?)/) ||
-    q.match(/\bless\s+than\s*\$?\s*(\d+(?:\.\d+)?)/) ||
-    q.match(/\bcheaper\s+than\s*\$?\s*(\d+(?:\.\d+)?)/) ||
-    q.match(/\$\s*(\d+(?:\.\d+)?)\s*(?:or\s+less|and\s+under)?/)
-  if (price) {
-    filters.maxPrice = parseFloat(price[1])
-    q = q.replace(price[0], ' ')
+  for (const r of lex.price || []) {
+    const m = q.match(r)
+    if (m) {
+      filters.maxPrice = parseFloat(m[1])
+      q = q.replace(m[0], ' ')
+      break
+    }
   }
 
-  if (/\borganic\b/.test(q)) {
+  if (lex.organic.detect && lex.organic.detect.test(q)) {
     filters.brand = 'organic'
-    q = q.replace(/\borganic\b/g, ' ')
+    q = q.replace(lex.organic.strip, ' ')
   }
 
-  const size = q.match(/\b(\d+(?:\.\d+)?)\s?(kg|g|ml|l|litre|liter|oz|pack|lb|pound)\b/)
-  if (size) {
-    filters.size = size[0].trim()
-    q = q.replace(size[0], ' ')
+  if (lex.sizeRe) {
+    const size = q.match(lex.sizeRe)
+    if (size) {
+      filters.size = size[0].trim()
+      q = q.replace(size[0], ' ')
+    }
   }
 
-  // strip search verbs and connectors
-  q = q
-    .replace(SEARCH_RE, ' ')
-    .replace(/\bfor\b/g, ' ')
-    .replace(/\b(dollars?|bucks?|price|priced|cost)\b/g, ' ')
-    .replace(/\bunder\b|\bbelow\b|\bless\s+than\b/g, ' ')
-  q = cleanItem(q)
+  if (lex.search.strip) {
+    q = q.replace(lex.search.strip, ' ')
+  }
+  if (lex.searchNoiseRe) {
+    q = q.replace(lex.searchNoiseRe, ' ')
+  }
 
+  q = cleanItem(q, lex)
   return { query: q, filters }
 }
 
-function detectAction(text) {
-  if (CLEAR_RE.test(text)) return 'clear'
-  // "change X to N" / "set X to N" / "update X to N" / "make it N"
-  if (/\b(change|update|set)\b.*\bto\b/.test(text) || /\bmake\s+it\b/.test(text)) return 'update'
-  if (SEARCH_RE.test(text)) return 'search'
-  if (REMOVE_RE.test(text)) return 'remove'
-  if (ADD_RE.test(text)) return 'add'
-  return 'add' // default: a bare noun ("milk", "eggs") means add
+function detectAction(text, lex) {
+  if (lex.clear.detect && lex.clear.detect.test(text)) return 'clear'
+  for (const r of lex.update.detect || []) {
+    if (r.test(text)) return 'update'
+  }
+  if (lex.search.detect && lex.search.detect.test(text)) return 'search'
+  if (lex.remove.detect && lex.remove.detect.test(text)) return 'remove'
+  if (lex.add.detect && lex.add.detect.test(text)) return 'add'
+  return 'add' // default: a bare noun means add
 }
 
-function parseUpdate(text) {
-  // change/set/update X to N
-  let m = text.match(/\b(?:change|update|set)\s+(.+?)\s+to\s+(\d+|[a-z]+)\b/)
-  if (m) {
-    const qty = /^\d+$/.test(m[2]) ? parseInt(m[2], 10) : NUMBER_WORDS[m[2]]
-    if (qty) return { item: cleanItem(m[1]), quantity: qty }
-  }
-  // make it N [item]
-  m = text.match(/\bmake\s+it\s+(\d+|[a-z]+)\s*(.*)$/)
-  if (m) {
-    const qty = /^\d+$/.test(m[1]) ? parseInt(m[1], 10) : NUMBER_WORDS[m[1]]
-    if (qty) return { item: cleanItem(m[2] || ''), quantity: qty }
+function parseUpdate(text, lex) {
+  for (const item of lex.update.extract || []) {
+    const m = text.match(item.re)
+    if (m) {
+      const rawQty = m[item.qty]
+      let qty = 1
+      if (/^\d+$/.test(rawQty)) {
+        qty = parseInt(rawQty, 10)
+      } else if (lex.numbers.has(rawQty)) {
+        qty = lex.numbers.get(rawQty)
+      }
+      if (qty) return { item: cleanItem(m[item.item], lex), quantity: qty }
+    }
   }
   return null
 }
@@ -171,10 +203,18 @@ function parseUpdate(text) {
  * @returns {import('./command.js').Command} normalized command with confidence
  */
 export function parseRules(transcript, language = 'en-US') {
-  const text = (transcript || '').toLowerCase().trim().replace(/[.!?]+$/g, '').replace(/\s+/g, ' ')
+  const lex = compiledFor(language)
+  let text = (transcript || '').toLowerCase().trim().replace(/[.!?]+$/g, '')
+
+  text = foldDigits(text, lex.digits)
+
+  if (lex.spaced) {
+    text = text.replace(/\s+/g, ' ')
+  }
+
   if (!text) return normalizeCommand({ action: 'unknown', confidence: 0 }, { transcript, language })
 
-  const action = detectAction(text)
+  const action = detectAction(text, lex)
 
   if (action === 'clear') {
     return normalizeCommand(
@@ -184,8 +224,9 @@ export function parseRules(transcript, language = 'en-US') {
   }
 
   if (action === 'search') {
-    const { query, filters } = extractSearch(text)
+    let { query, filters } = extractSearch(text, lex)
     const hasFilters = Object.keys(filters).length > 0
+    query = toCanonical(query, language) ?? query
     return normalizeCommand(
       {
         action: 'search',
@@ -198,20 +239,21 @@ export function parseRules(transcript, language = 'en-US') {
   }
 
   if (action === 'update') {
-    const u = parseUpdate(text)
+    const u = parseUpdate(text, lex)
     if (u && u.item) {
+      const canonicalItem = toCanonical(u.item, language) ?? u.item
       return normalizeCommand(
-        { action: 'update', item: u.item, quantity: u.quantity, category: categorize(u.item), confidence: 0.85 },
+        { action: 'update', item: canonicalItem, quantity: u.quantity, category: categorize(canonicalItem), confidence: 0.85 },
         { transcript, language },
       )
     }
-    // couldn't parse the update precisely -> let the LLM try
     return normalizeCommand({ action: 'update', confidence: 0.3 }, { transcript, language })
   }
 
   if (action === 'remove') {
-    const phrase = cleanItem(text.replace(REMOVE_STRIP_RE, ' '))
-    const { item } = extractQtyUnitItem(phrase)
+    const phrase = cleanItem(text.replace(lex.remove.strip, ' '), lex)
+    let { item } = extractQtyUnitItem(phrase, lex)
+    item = toCanonical(item, language) ?? item
     return normalizeCommand(
       { action: 'remove', item, confidence: item ? 0.9 : 0.2 },
       { transcript, language },
@@ -219,13 +261,21 @@ export function parseRules(transcript, language = 'en-US') {
   }
 
   // add (explicit verb or bare noun)
-  const hadVerb = ADD_RE.test(text)
-  const phrase = cleanItem(text.replace(ADD_STRIP_RE, ' '))
-  const { quantity, unit, item } = extractQtyUnitItem(phrase)
+  const hadVerb = lex.add.detect && lex.add.detect.test(text)
+  const phrase = cleanItem(text.replace(lex.add.strip, ' '), lex)
+  let { quantity, unit, item } = extractQtyUnitItem(phrase, lex)
+
+  item = toCanonical(item, language) ?? item
 
   let confidence = 0
-  if (item) confidence = hadVerb ? 0.9 : 0.55
-  if (item && item.split(' ').length > 5) confidence -= 0.3 // long item = probably a misparse
+  if (item) {
+    confidence = hadVerb ? 0.9 : 0.55
+    if (lex.spaced) {
+      if (item.split(' ').length > 5) confidence -= 0.3 // long item = probably a misparse
+    } else {
+      if (item.length > 10) confidence -= 0.3 // unspaced: character count threshold instead
+    }
+  }
 
   return normalizeCommand(
     {
