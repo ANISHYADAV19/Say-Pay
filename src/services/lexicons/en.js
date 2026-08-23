@@ -83,11 +83,11 @@ export default {
 
   /** Ordered; first match wins. Capture group 1 is the amount. */
   price: [
-    /\bunder\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bbelow\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bless\s+than\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bcheaper\s+than\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\$\s*(\d+(?:\.\d+)?)\s*(?:or\s+less|and\s+under)?/,
+    /\bunder\s*(?:\$|₹)?\s*(\d+(?:\.\d+)?)/,
+    /\bbelow\s*(?:\$|₹)?\s*(\d+(?:\.\d+)?)/,
+    /\bless\s+than\s*(?:\$|₹)?\s*(\d+(?:\.\d+)?)/,
+    /\bcheaper\s+than\s*(?:\$|₹)?\s*(\d+(?:\.\d+)?)/,
+    /(?:\$|₹)\s*(\d+(?:\.\d+)?)\s*(?:or\s+less|and\s+under)?/,
   ],
 
   /** Unit words allowed in a "500g"-style size filter. */

@@ -73,12 +73,12 @@ export default {
   },
 
   price: [
-    /\bpor\s+menos\s+de\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bmenos\s+de\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bmenores?\s+a\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\b(?:bajo|debajo\s+de)\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bm[áa]s\s+baratos?\s+que\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\$\s*(\d+(?:\.\d+)?)/,
+    /\bpor\s+menos\s+de\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\bmenos\s+de\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\bmenores?\s+a\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\b(?:bajo|debajo\s+de)\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\bm[áa]s\s+baratos?\s+que\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /(?:\$|€)\s*(\d+(?:\.\d+)?)/,
   ],
 
   sizeUnits: ['kg', 'g', 'ml', 'l', 'litro', 'litros', 'oz', 'pack', 'lb', 'libra', 'kilo', 'gramos'],

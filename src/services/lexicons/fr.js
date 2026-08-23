@@ -72,12 +72,12 @@ export default {
   },
 
   price: [
-    /\b(?:à\s+)?moins\s+de\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\ben\s+dessous\s+de\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bsous\s*\$?\s*(\d+(?:\.\d+)?)/,
-    /\bpas\s+plus\s+de\s*\$?\s*(\d+(?:\.\d+)?)/,
+    /\b(?:à\s+)?moins\s+de\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\ben\s+dessous\s+de\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\bsous\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
+    /\bpas\s+plus\s+de\s*(?:\$|€)?\s*(\d+(?:\.\d+)?)/,
     /(\d+(?:\.\d+)?)\s*(?:\$|€|euros?|dollars?)/,
-    /\$\s*(\d+(?:\.\d+)?)/,
+    /(?:\$|€)\s*(\d+(?:\.\d+)?)/,
   ],
 
   sizeUnits: ['kg', 'g', 'ml', 'l', 'litre', 'litres', 'oz', 'pack', 'lb', 'livre', 'kilo', 'grammes'],

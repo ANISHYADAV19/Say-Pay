@@ -73,12 +73,12 @@ const S = {
     'zh-CN': '正在思考…',
   },
   'status.hint': {
-    'en-US': 'Say “add milk” or “find apples under $5”',
-    'es-ES': 'Di “añade leche” o “busca manzanas por menos de $5”',
-    'fr-FR': 'Dites “ajoute du lait” ou “trouve des pommes à moins de 5 $”',
-    'de-DE': 'Sag “Milch hinzufügen” oder “Äpfel unter 5 $ finden”',
-    'hi-IN': '“दूध जोड़ें” या “$5 से कम में सेब खोजें” कहें',
-    'zh-CN': '说“添加牛奶”或“查找5美元以下的苹果”',
+    'en-US': 'Say “add milk” or “find apples under ₹5”',
+    'es-ES': 'Di “añade leche” o “busca manzanas por menos de 5 €”',
+    'fr-FR': 'Dites “ajoute du lait” ou “trouve des pommes à moins de 5 €”',
+    'de-DE': 'Sag “Milch hinzufügen” oder “Äpfel unter 5 € finden”',
+    'hi-IN': '“दूध जोड़ें” या “₹5 से कम में सेब खोजें” कहें',
+    'zh-CN': '说“添加牛奶”或“查找5元以下的苹果”',
   },
 
   // Mic button
@@ -217,12 +217,12 @@ const S = {
     'zh-CN': '点击麦克风自然地说话——或输入。试试这些：',
   },
   'empty.examples': {
-    'en-US': ['add 2 bottles of milk', 'add bread and eggs', 'find apples under $5'],
-    'es-ES': ['añade 2 botellas de leche', 'añade pan y huevos', 'busca manzanas por menos de $5'],
-    'fr-FR': ['ajoute 2 bouteilles de lait', 'ajoute du pain et des œufs', 'trouve des pommes à moins de 5 $'],
-    'de-DE': ['2 Flaschen Milch hinzufügen', 'Brot und Eier hinzufügen', 'Äpfel unter 5 $ finden'],
-    'hi-IN': ['दूध की 2 बोतलें जोड़ें', 'ब्रेड और अंडे जोड़ें', '$5 से कम में सेब खोजें'],
-    'zh-CN': ['添加2瓶牛奶', '添加面包和鸡蛋', '查找5美元以下的苹果'],
+    'en-US': ['add 2 bottles of milk', 'add bread and eggs', 'find apples under ₹5'],
+    'es-ES': ['añade 2 botellas de leche', 'añade pan y huevos', 'busca manzanas por menos de 5 €'],
+    'fr-FR': ['ajoute 2 bouteilles de lait', 'ajoute du pain et des œufs', 'trouve des pommes à moins de 5 €'],
+    'de-DE': ['2 Flaschen Milch hinzufügen', 'Brot und Eier hinzufügen', 'Äpfel unter 5 € finden'],
+    'hi-IN': ['दूध की 2 बोतलें जोड़ें', 'ब्रेड और अंडे जोड़ें', '₹5 से कम में सेब खोजें'],
+    'zh-CN': ['添加2瓶牛奶', '添加面包和鸡蛋', '查找5元以下的苹果'],
   },
 
   // Shopping list
