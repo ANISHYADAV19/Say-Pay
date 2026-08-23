@@ -8,14 +8,14 @@ import { useT } from '../i18n/useT.js'
  * price/brand/size and a one-tap add. Overlays the list; closing returns to it.
  */
 export default function SearchResults({ search, onAdd, onClose }) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const { query, filters = {}, results = [] } = search
   const label = query || filters.brand || t('search.itemsFallback')
 
   const chips = []
   if (filters.brand) chips.push(filters.brand)
   if (filters.size) chips.push(filters.size)
-  if (filters.maxPrice) chips.push(t('search.under', { price: money(filters.maxPrice) }))
+  if (filters.maxPrice) chips.push(t('search.under', { price: money(filters.maxPrice, lang) }))
 
   return (
     <div className="space-y-4">
@@ -69,7 +69,7 @@ export default function SearchResults({ search, onAdd, onClose }) {
                 </p>
               </div>
               <span className="shrink-0 font-semibold tabular-nums text-stone-700 dark:text-stone-200">
-                {money(p.price)}
+                {money(p.price, lang)}
               </span>
               <button
                 type="button"
