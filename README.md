@@ -4,7 +4,7 @@ Manage a shopping list entirely by voice. Say **“add two bottles of milk,”**
 
 > **On the name:** *Say & Pay* is branding only. This is a voice-driven shopping **list** manager — there is **no checkout or payment** feature (and none is implied by the assessment brief).
 
-**Live demo:** _[add your Vercel URL here after deploying]_
+**Live demo:** **[say-pay.anishyadav.dev](https://say-pay.anishyadav.dev/)** — no setup or API key needed; best in a Chromium browser (Chrome/Edge) for voice input.
 
 ---
 
@@ -85,7 +85,25 @@ Design rationale for each choice lives in [`docs/`](docs/).
 
 ---
 
+## Run locally
 
+```bash
+npm install
+npm run dev
+```
+
+Open the printed `http://localhost:5173`. The app works immediately on the **rule-based parser** — no API key needed. Adding a key (below) enables the LLM fallback for free-form and non-English phrasing.
+
+Other scripts:
+
+```bash
+npm run build      # production build to dist/
+npm run preview    # serve the production build locally
+npm run test       # run the unit suite once (35 tests)
+npm run test:watch # watch mode
+```
+
+---
 
 ## Environment variables
 
@@ -101,9 +119,9 @@ LLM_API_KEY=your-google-ai-studio-key   # server-side only — NEVER prefix with
 
 > ⚠️ **Security:** never prefix the key with `VITE_` (that would bundle it into client JS), and never commit `.env`. `.env*` is gitignored; only `.env.example` is tracked. Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
+> **Deploying:** these three variables must also be set in your host's dashboard (on Vercel: **Settings → Environment Variables**), then redeployed. A local `.env` file has no effect on the deployed serverless function — without the key in the host environment, `/api/parse` returns `502 llm_unavailable` and the app silently runs rules-only.
+
 ---
-
-
 
 ## Security notes
 

@@ -417,6 +417,34 @@ const S = {
     'zh-CN': '语音错误——请重试，或在下方输入。',
   },
 
+  // Shown by <ErrorBoundary> when a render throws. The app can't recover in
+  // place, so the only action offered is a reload — the list itself survives
+  // in localStorage, which is worth saying so the user doesn't fear losing it.
+  'error.crashTitle': {
+    'en-US': 'Something broke',
+    'es-ES': 'Algo se rompió',
+    'fr-FR': 'Une erreur est survenue',
+    'de-DE': 'Etwas ist kaputtgegangen',
+    'hi-IN': 'कुछ टूट गया',
+    'zh-CN': '出现故障',
+  },
+  'error.crashBody': {
+    'en-US': 'The app hit an unexpected error. Your shopping list is safe — reloading should fix it.',
+    'es-ES': 'La app encontró un error inesperado. Tu lista de compras está a salvo — recargar debería solucionarlo.',
+    'fr-FR': 'L’application a rencontré une erreur inattendue. Votre liste de courses est intacte — un rechargement devrait résoudre le problème.',
+    'de-DE': 'In der App ist ein unerwarteter Fehler aufgetreten. Deine Einkaufsliste ist sicher — ein Neuladen sollte helfen.',
+    'hi-IN': 'ऐप में एक अनपेक्षित त्रुटि आई। आपकी शॉपिंग सूची सुरक्षित है — रीलोड करने से ठीक हो जाना चाहिए।',
+    'zh-CN': '应用遇到意外错误。您的购物清单是安全的——重新加载应该可以解决问题。',
+  },
+  'error.crashReload': {
+    'en-US': 'Reload the app',
+    'es-ES': 'Recargar la app',
+    'fr-FR': 'Recharger l’application',
+    'de-DE': 'App neu laden',
+    'hi-IN': 'ऐप रीलोड करें',
+    'zh-CN': '重新加载应用',
+  },
+
   // Command feedback (describeCommand / useCommandRunner) — {name} may carry a
   // quantity/unit prefix; item names themselves are user data, not translated.
   'cmd.removed': {
