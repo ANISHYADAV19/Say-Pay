@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { cx } from '../utils/cx.js'
+import { isCoarsePointer } from '../utils/device.js'
 import { MicIcon, StopIcon, SpinnerIcon } from './icons.jsx'
 import MicWaveform from './MicWaveform.jsx'
 import { useT } from '../i18n/useT.js'
@@ -11,9 +12,9 @@ import { useT } from '../i18n/useT.js'
  *
  * Visually it's the one solid surface in the app: everything else is frosted
  * glass, so keeping the mic opaque with a layered halo behind it is what makes
- * it read as the primary action. While listening it shows live audio bars
- * driven by the real mic signal, falling back to the CSS pulse ring if that
- * stream can't be opened.
+ * it read as the primary action. On desktop it shows live audio bars driven by
+ * the real mic signal; touch devices and reduced-motion users get the CSS pulse
+ * ring instead.
  */
 const LABEL_KEYS = {
   idle: 'mic.idle',
@@ -22,14 +23,26 @@ const LABEL_KEYS = {
   unavailable: 'mic.unavailable',
 }
 
-/** Reduced-motion users get the static ring: the bars are JS transforms, so the
- *  global CSS animation override in index.css can't quiet them (NFR-4). */
 function prefersReducedMotion() {
   return (
     typeof window !== 'undefined' &&
     typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   )
+}
+
+/**
+ * Whether to attempt the live waveform at all.
+ *
+ * On phones the mic is single-consumer: the waveform's own getUserMedia stream
+ * competes with the recognizer and leaves it hearing silence, so the whole
+ * voice loop dies just to animate five bars — never worth it (see
+ * utils/device.js). Reduced-motion users are excluded too, because the bars are
+ * JS transforms and the global CSS animation override in index.css can't quiet
+ * them (NFR-4).
+ */
+function liveWaveformAllowed() {
+  return !isCoarsePointer() && !prefersReducedMotion()
 }
 
 export default function MicButton({ state = 'idle', onToggle }) {
@@ -40,12 +53,12 @@ export default function MicButton({ state = 'idle', onToggle }) {
   const unavailable = state === 'unavailable'
   const disabled = unavailable || processing
 
-  const [audioBlocked, setAudioBlocked] = useState(prefersReducedMotion)
+  const [audioBlocked, setAudioBlocked] = useState(() => !liveWaveformAllowed())
 
   // A failure is per-attempt (device busy, stream revoked mid-session), not
   // permanent — reset when listening stops so the next tap tries again.
   useEffect(() => {
-    if (!listening && !prefersReducedMotion()) setAudioBlocked(false)
+    if (!listening && liveWaveformAllowed()) setAudioBlocked(false)
   }, [listening])
 
   const showWaveform = listening && !audioBlocked

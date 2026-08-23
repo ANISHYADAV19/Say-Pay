@@ -8,6 +8,10 @@ import { useEffect, useRef } from 'react'
  * already granted by the time this mounts (it only renders while the recognizer
  * is listening), so this does not trigger a second prompt.
  *
+ * DESKTOP ONLY — MicButton gates this on pointer type. Phones treat the mic as
+ * single-consumer, so a second stream here starves the recognizer and kills the
+ * whole voice loop; see utils/device.js.
+ *
  * The rAF loop writes transforms straight to the bar nodes rather than going
  * through state — 60fps of setState here would re-render MicButton on every
  * frame for no benefit.

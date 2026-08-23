@@ -6,10 +6,13 @@
  */
 
 export function isSpeechSupported() {
-  return (
-    typeof window !== 'undefined' &&
-    !!(window.SpeechRecognition || window.webkitSpeechRecognition)
-  )
+  if (typeof window === 'undefined') return false
+  // Both engines gate the recognizer on a secure context. Over plain http —
+  // e.g. hitting the dev server from a phone on the LAN — the constructor can
+  // still exist while start() never yields any audio, which is worse than
+  // reporting it unsupported and promoting the typed input.
+  if (window.isSecureContext === false) return false
+  return !!(window.SpeechRecognition || window.webkitSpeechRecognition)
 }
 
 /**
@@ -18,6 +21,7 @@ export function isSpeechSupported() {
  *   onInterim?: (text: string) => void,
  *   onFinal?: (text: string) => void,
  *   onError?: (code: string) => void,
+ *   onNoResult?: () => void,
  *   onStart?: () => void,
  *   onEnd?: () => void,
  * }} opts
@@ -32,9 +36,30 @@ export function createRecognizer(opts = {}) {
   rec.interimResults = true
   rec.maxAlternatives = 1
 
+  // Per-session bookkeeping. The characteristic mobile failure is a session
+  // that opens and closes cleanly having heard nothing (see utils/device.js) —
+  // indistinguishable from success unless we track whether a transcript ever
+  // arrived, and from a cancellation unless we know the user hit stop.
+  let gotResult = false
+  let sawError = false
+  let userStopped = false
+
   rec.onstart = () => opts.onStart?.()
-  rec.onerror = (e) => opts.onError?.(e.error || 'unknown')
-  rec.onend = () => opts.onEnd?.()
+
+  rec.onerror = (e) => {
+    const code = e.error || 'unknown'
+    // "no-speech" is not a fault — it's the mic hearing nothing, which the
+    // onend/no-result path below reports more usefully.
+    if (code === 'no-speech') return
+    sawError = true
+    opts.onError?.(code)
+  }
+
+  rec.onend = () => {
+    if (!gotResult && !sawError && !userStopped) opts.onNoResult?.()
+    opts.onEnd?.()
+  }
+
   rec.onresult = (event) => {
     let interim = ''
     let final = ''
@@ -44,18 +69,32 @@ export function createRecognizer(opts = {}) {
       else interim += r[0].transcript
     }
     if (interim) opts.onInterim?.(interim)
-    if (final) opts.onFinal?.(final.trim())
+    if (final) {
+      gotResult = true
+      opts.onFinal?.(final.trim())
+    }
   }
 
   return {
     start() {
+      gotResult = false
+      sawError = false
+      userStopped = false
       try {
         rec.start()
-      } catch {
-        /* start() throws if already started — ignore */
+      } catch (err) {
+        // InvalidStateError just means a session is already open — harmless.
+        // Anything else means the engine is present but not functional (some
+        // WebKit wrappers expose the constructor without implementing it), and
+        // the UI has to hear about that rather than sit on a dead button.
+        if (err?.name !== 'InvalidStateError') {
+          sawError = true
+          opts.onError?.('start-failed')
+        }
       }
     },
     stop() {
+      userStopped = true
       try {
         rec.stop()
       } catch {
@@ -63,6 +102,7 @@ export function createRecognizer(opts = {}) {
       }
     },
     abort() {
+      userStopped = true
       try {
         rec.abort()
       } catch {

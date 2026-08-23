@@ -416,6 +416,26 @@ const S = {
     'hi-IN': 'वॉइस त्रुटि — कृपया पुनः प्रयास करें, या नीचे टाइप करें।',
     'zh-CN': '语音错误——请重试，或在下方输入。',
   },
+  // The recognizer never started: a browser that exposes the API without
+  // implementing it (common in in-app and non-Safari iOS browsers).
+  'error.voiceNoStart': {
+    'en-US': 'Voice didn’t start — this browser may not support it. Type below instead.',
+    'es-ES': 'La voz no se inició — este navegador puede no admitirla. Escribe abajo.',
+    'fr-FR': 'La voix n’a pas démarré — ce navigateur ne la prend peut-être pas en charge. Tapez ci-dessous.',
+    'de-DE': 'Sprache startete nicht — dieser Browser unterstützt sie möglicherweise nicht. Tippe unten.',
+    'hi-IN': 'वॉइस शुरू नहीं हुई — यह ब्राउज़र इसका समर्थन नहीं कर सकता। नीचे टाइप करें।',
+    'zh-CN': '语音未启动——此浏览器可能不支持。请在下方输入。',
+  },
+  // Session opened and closed without a transcript — silence, a muted mic, or a
+  // phone that handed the audio elsewhere. A nudge, not a failure.
+  'hint.noSpeech': {
+    'en-US': 'Didn’t hear anything — tap the mic and speak, or type below.',
+    'es-ES': 'No se escuchó nada — toca el micrófono y habla, o escribe abajo.',
+    'fr-FR': 'Rien entendu — appuyez sur le micro et parlez, ou tapez ci-dessous.',
+    'de-DE': 'Nichts gehört — tippe auf das Mikrofon und sprich, oder tippe unten.',
+    'hi-IN': 'कुछ सुनाई नहीं दिया — माइक पर टैप करके बोलें, या नीचे टाइप करें।',
+    'zh-CN': '没有听到声音——点击麦克风说话，或在下方输入。',
+  },
 
   // Shown by <ErrorBoundary> when a render throws. The app can't recover in
   // place, so the only action offered is a reload — the list itself survives

@@ -19,6 +19,20 @@ import ToastHost from './components/ToastHost.jsx'
 import AuroraBackground from './components/AuroraBackground.jsx'
 
 /**
+ * Voice error codes worth explaining, mapped to their message. Every code
+ * listed here is terminal for the session, so it also permanently promotes the
+ * typed input (FR-1.4, NFR-5); anything unlisted is treated as transient and
+ * gets the generic retry message.
+ */
+const VOICE_ERROR_KEYS = {
+  'not-allowed': 'error.micBlocked',
+  'service-not-allowed': 'error.micBlocked',
+  'audio-capture': 'error.noMic',
+  'no-start': 'error.voiceNoStart',
+  'start-failed': 'error.voiceNoStart',
+}
+
+/**
  * App shell (SP-024/025). Wires the store to the voice + command pipeline and
  * renders the full loop: header → status → input → suggestions → list/search,
  * with the mic FAB and toast host floating above. Mobile-first, a11y-minded.
@@ -52,7 +66,7 @@ function Shell() {
     [run],
   )
 
-  const { supported, listening, interim, error, toggle, clearError } = useSpeech({
+  const { supported, listening, interim, error, hint, toggle, clearError, clearHint } = useSpeech({
     language,
     onFinal: runText,
   })
@@ -61,17 +75,23 @@ function Shell() {
   // input once voice is denied/unavailable (FR-1.4, NFR-5).
   useEffect(() => {
     if (!error) return
-    const denied = error === 'not-allowed' || error === 'service-not-allowed'
-    const msg = denied
-      ? t('error.micBlocked')
-      : error === 'audio-capture'
-        ? t('error.noMic')
-        : t('error.generic')
-    if (denied || error === 'audio-capture') setVoiceDenied(true)
+    const key = VOICE_ERROR_KEYS[error]
+    const msg = t(key || 'error.generic')
+    if (key) setVoiceDenied(true)
     push({ type: 'error', message: msg })
     announce(msg)
     clearError()
   }, [error, push, announce, clearError, t])
+
+  // Recognizer opened and closed without hearing anything. Not a fault, so it
+  // gets a neutral nudge and leaves voice as the primary input.
+  useEffect(() => {
+    if (!hint) return
+    const msg = t('hint.noSpeech')
+    push({ type: 'info', message: msg })
+    announce(msg)
+    clearHint()
+  }, [hint, push, announce, clearHint, t])
 
   const promoteTyped = !supported || voiceDenied
 
