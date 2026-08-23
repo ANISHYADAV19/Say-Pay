@@ -24,10 +24,14 @@ export default function LanguageSelect({ value, onChange }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="glass appearance-none rounded-lg py-1.5 pl-8 pr-7 text-sm font-medium text-stone-700 outline-none transition focus:border-accent/70 focus:ring-2 focus:ring-accent/25 dark:text-stone-200"
+        className="glass appearance-none rounded-lg py-1.5 pl-8 pr-7 text-sm font-medium text-stone-700 outline-none transition focus:border-accent/70 focus:ring-2 focus:ring-accent/25 dark:text-stone-200 dark:[color-scheme:dark]"
       >
         {LANGUAGES.map((l) => (
-          <option key={l.code} value={l.code}>
+          <option
+            key={l.code}
+            value={l.code}
+            className="bg-white text-stone-900 dark:bg-stone-800 dark:text-stone-100"
+          >
             {l.label}
           </option>
         ))}
