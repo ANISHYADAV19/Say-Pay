@@ -109,17 +109,17 @@ npm run test:watch # watch mode
 
 The LLM key is **never** exposed to the browser. It is read only inside the serverless function.
 
-Copy `.env.example` → `.env` and fill in:
+Copy `.env.example` → `.env.local` and fill in:
 
 ```bash
 LLM_PROVIDER=gemini
-LLM_MODEL=gemini-2.0-flash
+LLM_MODEL=gemini-3.5-flash-lite
 LLM_API_KEY=your-google-ai-studio-key   # server-side only — NEVER prefix with VITE_
 ```
 
 > ⚠️ **Security:** never prefix the key with `VITE_` (that would bundle it into client JS), and never commit `.env`. `.env*` is gitignored; only `.env.example` is tracked. Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
-> **Deploying:** these three variables must also be set in your host's dashboard (on Vercel: **Settings → Environment Variables**), then redeployed. A local `.env` file has no effect on the deployed serverless function — without the key in the host environment, `/api/parse` returns `502 llm_unavailable` and the app silently runs rules-only.
+> **Deploying:** these three variables must also be set in your host’s dashboard (on Vercel: **Settings → Environment Variables**), then redeployed. A local `.env.local` file has no effect on the deployed serverless function — without the key in the host environment, `/api/parse` returns `502 llm_unavailable` and the app silently runs rules-only.
 
 ---
 
@@ -148,7 +148,9 @@ src/
     storage.js          localStorage persistence
   store/ListContext.jsx State (useReducer + Context) + persistence
   hooks/                useSpeech · useCommandRunner · useToasts
-  components/           UI (MicButton, ShoppingList, SearchResults, …)
+  i18n/                 strings.js (6-language key table) + useT() binding hook
+  components/           UI (MicButton, ShoppingList, ErrorBoundary, …)
+  utils/                cx() class-name helper, display formatting
   data/                 Static JSON (catalog, categories, seasonal, substitutes)
 docs/                   Requirements, architecture, and decision docs
 ```
@@ -171,9 +173,3 @@ Unit tests cover the parts where correctness matters most and that are cheap to 
 - **Multi-item phrases** (“add milk and eggs”) are handled by the LLM path rather than the rule parser, which parses one item at a time.
 - **Suggestions & catalog** run off bundled static JSON — appropriate for the assessment scope; a real deployment would source these from an API.
 - Speech recognition accuracy depends on the browser/OS; the rule parser is intentionally forgiving of filler words to compensate.
-
----
-
-## Scope note
-
-Built as an ~8-hour technical assessment. Priorities: a working end-to-end voice loop, clean and tested logic, honest documentation of the design decisions and their trade-offs.

@@ -61,7 +61,7 @@ const systemPrompt = () =>
   ].join('\n')
 
 async function callGemini({ transcript, language }) {
-  const model = process.env.LLM_MODEL || 'gemini-2.0-flash'
+  const model = process.env.LLM_MODEL || 'gemini-3.5-flash-lite'
   const key = process.env.LLM_API_KEY
   if (!key) throw new Error('missing_api_key')
 
