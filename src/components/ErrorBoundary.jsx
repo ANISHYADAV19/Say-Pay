@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { loadState } from '../services/storage.js'
 import { t, DEFAULT_LANG } from '../i18n/strings.js'
+import Button from './Button.jsx'
 
 /**
  * Last-resort boundary around the whole app (NFR-5). Async failures are handled
@@ -40,13 +41,13 @@ export default class ErrorBoundary extends Component {
             {t('error.crashTitle', lang)}
           </h1>
           <p className="mt-2 text-stone-600 dark:text-stone-400">{t('error.crashBody', lang)}</p>
-          <button
-            type="button"
+          <Button
             onClick={() => window.location.reload()}
-            className="glass glass-interactive mt-6 rounded-xl px-5 py-2.5 font-medium text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+            variant="secondary"
+            className="mt-6 text-accent hover:text-accent-hover dark:text-accent dark:hover:text-accent-hover"
           >
             {t('error.crashReload', lang)}
-          </button>
+          </Button>
         </div>
       </div>
     )

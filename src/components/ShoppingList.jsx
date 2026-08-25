@@ -2,6 +2,7 @@ import { useList, useGroupedItems } from '../store/ListContext.jsx'
 import CategoryGroup from './CategoryGroup.jsx'
 import { TrashIcon } from './icons.jsx'
 import { useT } from '../i18n/useT.js'
+import Button from './Button.jsx'
 
 /**
  * The shopping list view (SP-015, FR-3.2/3.3). Renders category groups from the
@@ -30,14 +31,16 @@ export default function ShoppingList() {
             <span className="text-stone-400 dark:text-stone-500"> · {t('list.done', { count: done })}</span>
           )}
         </p>
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
+          danger={true}
           onClick={handleClear}
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-stone-500 transition hover:bg-red-500/10 hover:text-red-600 dark:text-stone-400 dark:hover:bg-red-500/15 dark:hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/40"
+          className="gap-1"
         >
           <TrashIcon className="text-sm" />
           {t('list.clear')}
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-5">

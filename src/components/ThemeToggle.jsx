@@ -1,6 +1,7 @@
 import { useList } from '../store/ListContext.jsx'
 import { useT } from '../i18n/useT.js'
 import { SunIcon, MoonIcon } from './icons.jsx'
+import Button from './Button.jsx'
 
 /**
  * Light/dark theme toggle (FR-7.6). Flips the persisted theme in the store,
@@ -14,14 +15,15 @@ export default function ThemeToggle() {
   const label = t(isDark ? 'theme.toLight' : 'theme.toDark')
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="secondary"
+      size="icon"
       onClick={toggleTheme}
       aria-label={label}
       title={label}
-      className="glass glass-interactive grid h-9 w-9 place-items-center rounded-lg text-[1.05rem] text-stone-600 outline-none hover:text-accent focus:ring-2 focus:ring-accent/30 dark:text-stone-300 dark:hover:text-accent"
+      className="h-9 w-9 text-[1.05rem]"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}
-    </button>
+    </Button>
   )
 }

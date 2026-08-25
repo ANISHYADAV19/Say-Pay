@@ -2,6 +2,7 @@ import { cx } from '../utils/cx.js'
 import { titleCase, money } from '../utils/format.js'
 import { SearchIcon, CloseIcon, PlusIcon } from './icons.jsx'
 import { useT } from '../i18n/useT.js'
+import Button from './Button.jsx'
 
 /**
  * Catalog search results (SP-021, FR-5.2/5.3). Shows the matched products with
@@ -38,14 +39,15 @@ export default function SearchResults({ search, onAdd, onClose }) {
             </div>
           )}
         </div>
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onClose}
           aria-label={t('search.close')}
-          className="glass glass-interactive grid h-9 w-9 shrink-0 place-items-center rounded-lg text-stone-500 hover:text-accent dark:text-stone-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+          className="h-9 w-9"
         >
           <CloseIcon />
-        </button>
+        </Button>
       </div>
 
       {results.length === 0 ? (
@@ -71,19 +73,16 @@ export default function SearchResults({ search, onAdd, onClose }) {
               <span className="shrink-0 font-semibold tabular-nums text-stone-700 dark:text-stone-200">
                 {money(p.price, lang)}
               </span>
-              <button
-                type="button"
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={() => onAdd(p)}
                 aria-label={t('search.addAria', { name: p.name })}
-                className={cx(
-                  'flex shrink-0 items-center gap-1 rounded-lg bg-accent px-2.5 py-1.5 text-sm font-medium text-white transition',
-                  'ring-1 ring-inset ring-white/25 shadow-[0_4px_14px_-4px_rgba(13,148,136,0.75)]',
-                  'hover:bg-accent-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
-                )}
+                className="gap-1 shrink-0"
               >
                 <PlusIcon className="text-sm" />
                 {t('search.add')}
-              </button>
+              </Button>
             </li>
           ))}
         </ul>

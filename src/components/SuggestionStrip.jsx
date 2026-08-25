@@ -3,6 +3,7 @@ import { PlusIcon } from './icons.jsx'
 import { useT } from '../i18n/useT.js'
 import { useTerm } from '../i18n/useTerm.js'
 import { titleCase } from '../utils/format.js'
+import Button from './Button.jsx'
 
 /**
  * Suggestion chips (SP-019, FR-4.4). Horizontally scrollable; each chip adds
@@ -32,22 +33,19 @@ export default function SuggestionStrip({ suggestions, onAdd }) {
           const displayLabel = titleCase(term(s.item))
           return (
             <li key={s.id} className="snap-start">
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                pill={true}
                 onClick={() => onAdd(s)}
                 title={t('suggestions.addAction', { tag, label: displayLabel })}
-                className={cx(
-                  'glass glass-interactive flex items-center gap-2 whitespace-nowrap rounded-full py-2 pl-3 pr-2 text-sm font-medium',
-                  'text-stone-800 hover:text-accent dark:text-stone-100 dark:hover:text-accent',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40',
-                )}
+                className="gap-2 whitespace-nowrap py-2 pl-3 pr-2"
               >
                 <span className={cx('h-2 w-2 rounded-full', meta.dot)} aria-hidden />
                 {displayLabel}
                 <span className="grid h-5 w-5 place-items-center rounded-full bg-accent/15 text-accent">
                   <PlusIcon className="text-sm" />
                 </span>
-              </button>
+              </Button>
             </li>
           )
         })}

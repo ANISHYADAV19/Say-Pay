@@ -3,6 +3,7 @@ import { titleCase } from '../utils/format.js'
 import { CheckIcon, TrashIcon, PlusIcon, MinusIcon } from './icons.jsx'
 import { useT } from '../i18n/useT.js'
 import { useTerm } from '../i18n/useTerm.js'
+import Button from './Button.jsx'
 
 /**
  * A single list row (SP-016, FR-3.x/7.5). Tap the checkbox to mark bought,
@@ -83,14 +84,16 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
         </div>
       )}
 
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="icon"
+        danger={true}
         onClick={() => onDelete(id)}
         aria-label={t('row.delete', { name: displayLabel })}
-        className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-500/10 hover:text-red-600 dark:hover:bg-red-500/15 dark:hover:text-red-400"
+        className="h-8 w-8 text-stone-400 shrink-0"
       >
         <TrashIcon className="text-base" />
-      </button>
+      </Button>
     </li>
   )
 }
