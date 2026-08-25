@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { cx } from '../utils/cx.js'
-import { PlusIcon } from './icons.jsx'
+import { SendIcon } from './icons.jsx'
 import { useT } from '../i18n/useT.js'
 import Button from './Button.jsx'
 
@@ -43,7 +43,7 @@ export default function TypedInputFallback({ onSubmit, promoted = false, disable
         disabled={disabled || !value.trim()}
         aria-label={t('input.send')}
       >
-        <PlusIcon className="text-xl" />
+        <SendIcon className="text-xl" />
       </Button>
     </form>
   )
