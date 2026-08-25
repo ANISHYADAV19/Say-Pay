@@ -21,7 +21,7 @@ export default function StatusBar({ listening, processing, interim, lastTranscri
 
   const shown = interim || lastTranscript
   return (
-    <div className="glass rounded-2xl px-4 py-3">
+    <div className="glass rounded-2xl px-4 py-2">
       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-stone-500 dark:text-stone-400">
         <span className={cx('h-2.5 w-2.5 rounded-full', dotClass)} aria-hidden />
         {stateWord}

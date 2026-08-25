@@ -138,7 +138,7 @@ function Shell() {
           announcement={announcement}
         />
 
-        <TypedInputFallback onSubmit={runText} promoted={promoteTyped} disabled={processing} />
+        <TypedInputFallback onSubmit={runText} promoted={promoteTyped} disabled={processing} className="mt-2" />
 
         <SuggestionStrip suggestions={suggestions} onAdd={onAddSuggestion} />
 

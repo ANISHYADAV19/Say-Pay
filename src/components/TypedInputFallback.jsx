@@ -9,7 +9,7 @@ import Button from './Button.jsx'
  * primary input when speech is unsupported/denied. Feeds the exact same parser
  * pipeline as voice, so the app is fully usable without a mic.
  */
-export default function TypedInputFallback({ onSubmit, promoted = false, disabled = false }) {
+export default function TypedInputFallback({ onSubmit, promoted = false, disabled = false, className }) {
   const { t } = useT()
   const [value, setValue] = useState('')
 
@@ -22,7 +22,7 @@ export default function TypedInputFallback({ onSubmit, promoted = false, disable
   }
 
   return (
-    <form onSubmit={submit} className="flex items-center gap-2" aria-label={t('input.formLabel')}>
+    <form onSubmit={submit} className={cx('flex items-center gap-2', className)} aria-label={t('input.formLabel')}>
       <input
         type="text"
         value={value}
