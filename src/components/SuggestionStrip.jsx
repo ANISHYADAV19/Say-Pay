@@ -23,10 +23,10 @@ export default function SuggestionStrip({ suggestions, onAdd }) {
 
   return (
     <section aria-label={t('suggestions.title')} className="space-y-2">
-      <h2 className="px-1 text-xs font-semibold uppercase tracking-wide text-stone-500 dark:text-stone-400">
+      <h2 className="px-1 text-sm font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300">
         {t('suggestions.title')}
       </h2>
-      <ul className="flex snap-x gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <ul className="flex snap-x gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {suggestions.map((s) => {
           const meta = SOURCE_META[s.source] || SOURCE_META.substitute
           const tag = t(meta.tagKey)

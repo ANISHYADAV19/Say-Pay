@@ -59,41 +59,43 @@ export default function ListItemRow({ item, justChanged, onToggle, onStep, onDel
         )}
       </div>
 
-      {!checked && (
-        <div className="flex items-center gap-1 rounded-lg border border-white/50 bg-white/45 p-0.5 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.6)] dark:border-white/[0.06] dark:bg-black/20 dark:shadow-none">
-          <button
-            type="button"
-            onClick={() => onStep(id, quantity - 1)}
-            disabled={quantity <= 1}
-            aria-label={t('row.decrease', { name: displayLabel })}
-            className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent disabled:opacity-30 disabled:hover:bg-transparent dark:text-stone-300 dark:hover:bg-white/10"
-          >
-            <MinusIcon className="text-sm" />
-          </button>
-          <span className="w-6 text-center text-sm font-semibold tabular-nums" aria-label={t('row.quantity', { qty: quantity })}>
-            {quantity}
-          </span>
-          <button
-            type="button"
-            onClick={() => onStep(id, quantity + 1)}
-            aria-label={t('row.increase', { name: displayLabel })}
-            className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent dark:text-stone-300 dark:hover:bg-white/10"
-          >
-            <PlusIcon className="text-sm" />
-          </button>
-        </div>
-      )}
+      <div className="flex items-center gap-2 shrink-0">
+        {!checked && (
+          <div className="flex items-center gap-1 rounded-lg border border-white/50 bg-white/45 p-0.5 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.6)] dark:border-white/[0.06] dark:bg-black/20 dark:shadow-none">
+            <button
+              type="button"
+              onClick={() => onStep(id, quantity - 1)}
+              disabled={quantity <= 1}
+              aria-label={t('row.decrease', { name: displayLabel })}
+              className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent disabled:opacity-30 disabled:hover:bg-transparent dark:text-stone-300 dark:hover:bg-white/10"
+            >
+              <MinusIcon className="text-sm" />
+            </button>
+            <span className="w-5 text-center text-sm font-semibold tabular-nums" aria-label={t('row.quantity', { qty: quantity })}>
+              {quantity}
+            </span>
+            <button
+              type="button"
+              onClick={() => onStep(id, quantity + 1)}
+              aria-label={t('row.increase', { name: displayLabel })}
+              className="grid h-7 w-7 place-items-center rounded-md text-stone-600 transition hover:bg-white/80 hover:text-accent dark:text-stone-300 dark:hover:bg-white/10"
+            >
+              <PlusIcon className="text-sm" />
+            </button>
+          </div>
+        )}
 
-      <Button
-        variant="ghost"
-        size="icon"
-        danger={true}
-        onClick={() => onDelete(id)}
-        aria-label={t('row.delete', { name: displayLabel })}
-        className="h-8 w-8 text-stone-400 shrink-0"
-      >
-        <TrashIcon className="text-base" />
-      </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          danger={true}
+          onClick={() => onDelete(id)}
+          aria-label={t('row.delete', { name: displayLabel })}
+          className="h-8 w-8 text-stone-400"
+        >
+          <TrashIcon className="text-base" />
+        </Button>
+      </div>
     </li>
   )
 }
