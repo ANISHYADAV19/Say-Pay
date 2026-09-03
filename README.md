@@ -1,3 +1,5 @@
+[![Live Website](https://img.shields.io/badge/Live-Website-success?style=for-the-badge)](https://say-pay.anishyadav.dev/)
+
 # Say & Pay — Voice Command Shopping Assistant
 
 Manage a shopping list entirely by voice. Say **“add two bottles of milk,”** **“remove bread,”** or **“find organic apples under $5”** and the app understands the intent, updates a categorized list, and suggests smart additions.
