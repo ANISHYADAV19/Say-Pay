@@ -6,7 +6,7 @@ Manage a shopping list entirely by voice. Say **“add two bottles of milk,”**
 
 > **On the name:** *Say & Pay* is branding only. This is a voice-driven shopping **list** manager — there is **no checkout or payment** feature (and none is implied by the assessment brief).
 
-**Live demo:** **[say-pay.anishyadav.dev](https://say-pay.anishyadav.dev/)** — no setup or API key needed; best in a Chromium browser (Chrome/Edge) for voice input.
+
 
 ---
 
